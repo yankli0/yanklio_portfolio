@@ -1,0 +1,34 @@
+[tools]
+node = "24.21.0"
+
+[tasks.setup]
+description = "Install dependencies from the lockfile"
+run = "npm ci"
+
+[tasks.dev]
+description = "Start the Astro development server"
+run = "npm run dev --"
+
+[tasks.build]
+description = "Build the production site"
+run = "npm run build"
+
+[tasks.preview]
+description = "Preview the production build"
+run = "npm run preview --"
+
+[tasks.check]
+description = "Check Astro components and TypeScript"
+run = "npm exec astro check"
+
+[tasks.format]
+description = "Format Astro and CSS source files"
+run = "npm run format"
+
+[tasks."format:check"]
+description = "Check Astro and CSS formatting"
+run = "npm run format:check"
+
+[tasks.validate]
+description = "Run all pre-commit checks"
+run = ["mise run format:check", "mise run build", "mise run check", "git diff --check"]

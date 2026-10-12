@@ -1,80 +1,40 @@
 # Astro Portfolio
 
-A minimal, retro Gruvbox-themed personal portfolio and blog built with [Astro](https://astro.build).
+Personal portfolio and Markdown notes built with Astro and TypeScript.
 
-## Features
+## Development with mise
 
-- **Framework:** Astro ^5.16.4
-- **Language:** TypeScript
-- **Styling:** Custom retro, Gruvbox-themed CSS with a "Paper" design system (heavy borders, deep shadows).
-- **Icons:** `astro-icon` integration for inline SVGs.
-- **Blog:** Markdown-based blog using Astro Content Collections with Zod validation.
-- **RSS Feed:** Built-in RSS feed generation using `@astrojs/rss`.
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18 or higher recommended)
-- npm (or yarn, pnpm, bun)
-
-### Installation
-
-1. Clone the repository:
-   ```sh
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
-
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-
-### Development
-
-Start the local development server:
+[mise](https://mise.jdx.dev/getting-started.html) is the project entry point. It supplies the exact Node version from `mise.toml`; npm is included with Node. Install mise first (on Windows: `winget install jdx.mise`).
 
 ```sh
-npm run dev
+mise trust
+mise install
+mise run setup
+mise run dev
 ```
 
-This will start the server at `http://localhost:4321`.
+The development server runs at http://localhost:4321. Run project commands through mise so local development and CI use the same runtime.
 
-### Building for Production
+| Command | Purpose |
+| --- | --- |
+| `mise run setup` | Install locked dependencies |
+| `mise run dev` | Start development server |
+| `mise run build` | Generate `dist/` |
+| `mise run preview` | Preview production build |
+| `mise run check` | Validate Astro and TypeScript |
+| `mise run format` | Format Astro and CSS |
+| `mise run format:check` | Check formatting |
+| `mise run validate` | Formatting, build, types, and whitespace checks |
 
-To build the static site:
+For package maintenance, use `mise exec -- npm install <package>`. The npm scripts are implementation details used by mise tasks. Format only Astro and CSS source; do not format Markdown posts as part of UI work.
 
-```sh
-npm run build
-```
+## Project structure
 
-The generated files will be placed in the `dist/` directory.
+- `src/pages/`: About, Notes, articles, RSS, robots, and 404.
+- `src/components/`: Reusable UI components.
+- `src/layouts/`: Page metadata, shell, and Markdown layout.
+- `src/config/site.ts`: Copy, navigation, social links, and fallback image.
+- `src/blog/`: Published Markdown posts.
+- `src/styles/`: Global styles, theme setup, fonts, and layout tokens.
 
-### Previewing Production Build
-
-To preview the built site locally before deploying:
-
-```sh
-npm run preview
-```
-
-### Type Checking
-
-To validate Astro components and catch type errors:
-
-```sh
-npx astro check
-```
-
-## Project Structure
-
-```text
-src/
-├── blog/           # Markdown blog posts
-├── components/     # Reusable Astro components (e.g., Header, Footer)
-├── content.config.ts # Zod schemas for content collections
-├── layouts/        # Page layouts (BaseLayout, MarkdownPostLayout)
-├── pages/          # File-based routing (pages and dynamic routes)
-└── styles/         # Global CSS files (including Gruvbox theme)
-```
+The canonical URL is configured in `astro.config.mjs`. Optional post images, RSS, sitemap, and fallback social metadata are supported.
