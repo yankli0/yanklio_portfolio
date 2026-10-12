@@ -3,8 +3,8 @@ import { Icon } from "astro-icon/components";
 ---
 
 <button
-    class="btn btn-ghost btn-square theme-toggle"
-    aria-label="Switch color theme"
+    class="btn btn-primary btn-square theme-toggle"
+    aria-label="Dark theme"
     aria-pressed="false"
     type="button"
     data-theme-toggle
@@ -13,13 +13,13 @@ import { Icon } from "astro-icon/components";
     <Icon class="moon" name="ic:baseline-dark-mode" aria-hidden="true" />
 </button>
 <style>
-    .sun {
+    .moon {
         display: none;
     }
     :global([data-theme="forest"]) .sun {
-        display: block;
+        display: none;
     }
     :global([data-theme="forest"]) .moon {
-        display: none;
+        display: block;
     }
 </style>

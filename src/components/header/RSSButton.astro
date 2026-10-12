@@ -2,6 +2,15 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<a class="btn btn-outline rss-button" href="/rss.xml" aria-label="RSS feed">
-    <Icon name="ic:outline-rss-feed" aria-hidden="true" />RSS feed
-</a>
+<a class="link rss-link" href="/rss.xml"><Icon name="ic:outline-rss-feed" aria-hidden="true" />RSS feed</a>
+<style>
+    .rss-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+    }
+    .rss-link :global(svg) {
+        width: 1rem;
+        height: 1rem;
+    }
+</style>

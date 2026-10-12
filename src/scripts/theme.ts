@@ -5,7 +5,7 @@ function syncThemeControls() {
     const isDark = document.documentElement.dataset.theme === "forest";
     document.querySelectorAll<HTMLElement>("[data-theme-toggle]").forEach((toggle) => {
         toggle.setAttribute("aria-pressed", String(isDark));
-        toggle.setAttribute("aria-label", isDark ? "Switch to Garden light theme" : "Switch to Forest dark theme");
+        toggle.setAttribute("aria-label", "Dark theme");
     });
 }
 

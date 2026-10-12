@@ -1,19 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <style>
-        .bg   { fill: #282828; }
-        .fg   { fill: #fe8019; }
-        @media (prefers-color-scheme: light) {
-            .bg { fill: #fbf1c7; }
-            .fg { fill: #d65d0e; }
-        }
-    </style>
-    <rect class="bg" width="32" height="32"/>
-    <text
-        class="fg"
-        x="16" y="24"
-        font-family="'Courier New', Courier, monospace"
-        font-size="23"
-        font-weight="900"
-        text-anchor="middle"
-    >y</text>
+    <title>Yaroslav</title>
+    <rect width="32" height="32" rx="2" fill="#faf4e8"/>
+    <rect x="4" y="4" width="27" height="27" rx="1" fill="#352b23"/>
+    <rect x="1.5" y="1.5" width="27" height="27" rx="1" fill="#d1865a" stroke="#352b23"/>
+    <path d="M7 7h4l4 7 4-7h4l-6 11v6h-4v-6Z" fill="#2e2118"/>
 </svg>

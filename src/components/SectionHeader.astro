@@ -1,0 +1,17 @@
+---
+interface Props {
+    title?: string;
+    id?: string;
+    level?: 2 | 3;
+    compact?: boolean;
+}
+
+const { title, id, level = 2, compact = false } = Astro.props;
+const Heading = level === 3 ? "h3" : "h2";
+---
+
+<Heading
+    id={id}
+    class:list={["heading", compact ? "heading--label" : level === 3 ? "heading--subsection" : "heading--section"]}
+    ><slot>{title}</slot></Heading
+>

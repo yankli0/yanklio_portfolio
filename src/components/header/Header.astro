@@ -1,83 +1,185 @@
 ---
+import { Icon } from "astro-icon/components";
 import Logo from "../Logo.astro";
 import Navigation from "./Navigation.astro";
 import ThemeIcon from "./ThemeIcon.astro";
 ---
 
-<header class="site-header bg-base-100">
-    <div class="masthead-strip">
-        <div class="page-container strip-inner">
-            <span>Make it make sense</span><span class="strip-location">Poznań, PL</span>
+<header class="site-header bg-base-100 layout-rule--bottom">
+    <div class="masthead-strip bg-base-content text-base-100">
+        <span class="sr-only">Make it make sense</span>
+        <div class="masthead-ticker" aria-hidden="true">
+            <div class="masthead-ticker__group">
+                <span class="masthead-ticker__unit">
+                    <span>Make it make sense</span>
+                    <span class="text-primary">✦</span>
+                    <span data-ticker-phrase>Brewing</span>
+                    <span class="text-primary">✦</span>
+                </span>
+            </div>
         </div>
+        <button
+            class="btn btn-ghost ticker-pause"
+            type="button"
+            aria-label="Pause scrolling banner"
+            hidden
+            data-ticker-pause
+        >
+            <Icon class="pause-icon" name="ic:baseline-pause" aria-hidden="true" />
+            <Icon class="play-icon" name="ic:baseline-play-arrow" aria-hidden="true" />
+        </button>
     </div>
     <div class="navbar page-container masthead">
-        <div class="navbar-start"><Logo /></div>
-        <div class="navbar-end">
-            <span class="masthead-caption">A developer’s corner<br />of the internet.</span><ThemeIcon />
-        </div>
+        <Logo />
+        <div class="masthead-details"><p>Full-stack developer<br /><span>Poznań, PL</span></p><ThemeIcon /></div>
     </div>
-    <div class="navigation-row">
-        <div class="page-container navigation-inner">
-            <Navigation /><span class="navigation-caption">Code, notes & everything in between.</span>
-        </div>
-    </div>
+    <div class="navigation-row bg-base-200 layout-rule--top"><div class="page-container"><Navigation /></div></div>
 </header>
+<script>
+    const phrases = [
+        "Baking",
+        "Beaming",
+        "Beboppin'",
+        "Befuddling",
+        "Billowing",
+        "Blanching",
+        "Bloviating",
+        "Boogieing",
+        "Boondoggling",
+        "Brewing",
+        "Architecting",
+        "Actualizing",
+    ];
+    document.querySelectorAll<HTMLElement>(".masthead-ticker").forEach((ticker) => {
+        const pause = ticker.parentElement!.querySelector<HTMLButtonElement>("[data-ticker-pause]")!;
+        pause.hidden = false;
+        pause.setAttribute("aria-label", "Pause scrolling banner");
+        pause.addEventListener("click", () => {
+            const paused = ticker.dataset.paused !== "true";
+            ticker.dataset.paused = String(paused);
+            pause.dataset.paused = String(paused);
+            pause.setAttribute("aria-label", paused ? "Resume scrolling banner" : "Pause scrolling banner");
+        });
+        const group = ticker.querySelector<HTMLElement>(".masthead-ticker__group")!;
+        const unit = group.querySelector<HTMLElement>(".masthead-ticker__unit")!;
+        unit.querySelector("[data-ticker-phrase]")!.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+
+        const fitTicker = () => {
+            ticker.querySelectorAll(".masthead-ticker__group").forEach((copy) => {
+                if (copy !== group) copy.remove();
+            });
+            group.replaceChildren(unit);
+            const unitWidth = unit.getBoundingClientRect().width;
+            if (!unitWidth) return;
+            const count = Math.ceil(ticker.parentElement!.clientWidth / unitWidth);
+            for (let index = 1; index < count; index++) {
+                group.append(unit.cloneNode(true));
+            }
+            const distance = group.getBoundingClientRect().width;
+            ticker.append(group.cloneNode(true));
+            ticker.style.setProperty("--ticker-distance", `${distance}px`);
+            ticker.style.setProperty("--ticker-duration", `${distance / 42}s`);
+            ticker.dataset.ready = "true";
+        };
+
+        void document.fonts.ready.then(() => {
+            fitTicker();
+            new ResizeObserver(fitTicker).observe(ticker.parentElement!);
+        });
+    });
+</script>
 <style>
-    .site-header {
-        border-bottom: var(--rule-width) solid var(--rule-color);
-    }
     .masthead-strip {
+        position: relative;
+        padding-block: var(--space-1);
+        overflow: hidden;
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+    .masthead-ticker {
+        display: flex;
+        width: max-content;
+    }
+    .masthead-ticker[data-ready] {
+        animation: ticker-scroll var(--ticker-duration) linear infinite;
+    }
+    .masthead-ticker[data-paused="true"] {
+        animation-play-state: paused;
+    }
+    .ticker-pause {
+        position: absolute;
+        inset: 0 0 0 auto;
+        height: 100%;
+        min-height: 0;
+        border: 0;
+        border-left: var(--rule-width) solid currentColor;
+        border-radius: 0;
         background: var(--color-base-content);
         color: var(--color-base-100);
-        padding: var(--space-1) var(--page-gutter);
+        padding-inline: var(--space-2);
     }
-    .strip-inner {
+    .ticker-pause:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: -4px;
+    }
+    .ticker-pause :global(.play-icon),
+    .ticker-pause[data-paused="true"] :global(.pause-icon) {
+        display: none;
+    }
+    .ticker-pause[data-paused="true"] :global(.play-icon) {
+        display: block;
+    }
+    .ticker-pause[hidden] {
+        display: none;
+    }
+    .masthead-ticker__group {
         display: flex;
-        justify-content: space-between;
-        gap: var(--space-3);
-        font-size: 0.65rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
+        flex-shrink: 0;
     }
-    .masthead {
-        min-height: var(--header-height);
-        width: calc(100% - var(--page-gutter) * 2);
-        padding: var(--space-3) 0;
-    }
-    .navbar-start {
-        width: auto;
-        flex: 1;
-    }
-    .navbar-end {
-        width: auto;
-        gap: var(--space-5);
-    }
-    .masthead-caption {
-        font-size: var(--text-small);
-        text-align: right;
-        line-height: 1.6;
-    }
-    .navigation-row {
-        padding-inline: var(--page-gutter);
-        border-top: var(--rule-width) solid var(--rule-color);
-        background: var(--color-base-200);
-    }
-    .navigation-inner {
+    .masthead-ticker__unit {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        flex: none;
+        gap: var(--space-7);
+        white-space: nowrap;
+        padding-right: var(--space-7);
     }
-    .navigation-caption {
-        font-size: var(--text-small);
+    @keyframes ticker-scroll {
+        to {
+            transform: translateX(calc(-1 * var(--ticker-distance)));
+        }
     }
-    @media (max-width: 700px) {
-        .masthead-caption,
-        .navigation-caption,
-        .strip-location {
+    @media (prefers-reduced-motion: reduce) {
+        .ticker-pause {
             display: none;
         }
-        .strip-inner {
-            font-size: 0.6rem;
+        .masthead-ticker[data-ready] {
+            animation: none;
+        }
+    }
+    .masthead {
+        justify-content: space-between;
+        min-height: var(--header-height);
+        padding: var(--space-3) 0;
+        width: calc(100% - var(--page-gutter) * 2);
+    }
+    .masthead-details {
+        display: flex;
+        align-items: center;
+        gap: var(--space-5);
+    }
+    .masthead-details p {
+        font-size: var(--text-small);
+        line-height: 1.6;
+        text-align: right;
+    }
+    .navigation-row {
+        padding-inline: var(--space-2);
+    }
+    @media (max-width: 700px) {
+        .masthead-details p {
+            display: none;
         }
     }
 </style>

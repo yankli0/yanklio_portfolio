@@ -1,12 +1,16 @@
 :root {
-    --rule-width: 1px;
+    --rule-width: var(--border, 1px);
     --rule-color: color-mix(in oklch, var(--color-base-content) 65%, var(--color-base-100));
     --press-offset: 3px;
-    --content-max: 72rem;
+    --content-max: 62rem;
     --text-max: 48rem;
     --page-gutter: clamp(1.25rem, 4vw, 4rem);
     --page-top: clamp(1.5rem, 4vw, 3rem);
-    --header-height: 6.5rem;
+    --content-inset: var(--space-4);
+    --section-gap: var(--space-6);
+    --header-height: 5.5rem;
+    --ticker-height: calc(1.3125rem + var(--space-1) * 2);
+    --sticky-header-offset: calc(var(--header-height) + var(--space-10));
     --space-1: 0.5rem;
     --space-2: 0.75rem;
     --space-3: 1rem;
@@ -22,8 +26,8 @@
     --text-body: 1rem;
     --text-body-large: 1.05rem;
     --text-lead: clamp(1.1rem, 2.5vw, 1.4rem);
-    --text-card-title: clamp(1.65rem, 3.5vw, 2.75rem);
-    --text-section-title: clamp(1.75rem, 4vw, 2.75rem);
-    --text-page-title: clamp(3.25rem, 8vw, 6.75rem);
-    --leading-body: 1.85;
+    --text-card-title: clamp(1.3rem, 2.5vw, 1.8rem);
+    --text-section-title: clamp(1.25rem, 2.5vw, 1.6rem);
+    --text-page-title: clamp(1.75rem, 3.5vw, 2.4rem);
+    --leading-body: 1.75;
 }

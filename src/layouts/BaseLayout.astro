@@ -13,7 +13,7 @@ interface Props {
 
 const { pageTitle = "", pageDescription, pageImage, pageType = "website" } = Astro.props;
 const description = pageDescription ?? site.description;
-const resolvedTitle = pageTitle ? `${pageTitle} | ${site.handle}` : site.handle;
+const resolvedTitle = pageTitle ? `${pageTitle} | ${site.name}` : site.name;
 const siteUrl = Astro.site ?? new URL(Astro.url.origin);
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
@@ -23,6 +23,8 @@ const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
     <head>
         <meta charset="utf-8" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/JetBrainsMono-Medium.woff2" as="font" type="font/woff2" crossorigin />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
 
@@ -34,7 +36,7 @@ const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={resolvedTitle} />
         <meta property="og:description" content={description} />
-        <meta property="og:site_name" content={site.handle} />
+        <meta property="og:site_name" content={site.name} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:alt" content={`${resolvedTitle} preview`} />
 
@@ -52,7 +54,7 @@ const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
                 "@graph": [
                     {
                         "@type": "WebSite",
-                        name: site.handle,
+                        name: site.name,
                         url: siteUrl.href,
                     },
                     {
@@ -110,11 +112,20 @@ const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
         transform: translateY(0);
     }
     .site-shell {
+        position: relative;
+        container-type: inline-size;
+        overflow-x: clip;
         display: flex;
         flex-direction: column;
         min-height: 100svh;
     }
+    .header-slot {
+        position: sticky;
+        top: calc(-1 * var(--ticker-height));
+        z-index: 20;
+    }
     main {
+        position: relative;
         flex: 1;
         min-width: 0;
         padding-inline: var(--page-gutter);

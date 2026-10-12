@@ -1,15 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
 ---
 
 <BaseLayout pageTitle="Not found">
     <section class="hero page-container not-found" aria-labelledby="not-found-title">
         <div class="hero-content error-content">
-            <p class="error-code text-primary" aria-hidden="true">404</p>
-            <p class="page-kicker">Route unavailable</p>
-            <h1 id="not-found-title">Nothing here.</h1>
+            <p class="error-code text-secondary" aria-hidden="true">404</p>
+            <PageHeader id="not-found-title" title="Page not found" />
             <p class="error-message">The page may have moved, or it never existed.</p>
-            <a class="btn btn-primary" href="/"><span aria-hidden="true">←</span> Back home</a>
+            <a class="link" href="/"><span aria-hidden="true">←</span> Back home</a>
         </div>
     </section>
 </BaseLayout>
@@ -25,14 +25,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         padding: 0;
     }
     .error-code {
-        font-size: clamp(6rem, 20vw, 13rem);
+        font-size: clamp(4rem, 12vw, 7rem);
         letter-spacing: -0.1em;
         line-height: 1;
-    }
-    h1 {
-        font-size: var(--text-section-title);
-        line-height: 1.1;
-        letter-spacing: -0.06em;
     }
     .error-message {
         max-width: 30rem;

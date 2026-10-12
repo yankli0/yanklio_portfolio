@@ -2,26 +2,14 @@
 import { site } from "../config/site";
 ---
 
-<a href="/" class="logo" aria-label={`${site.name} — home`}
-    ><span>{site.handle}</span><span class="text-primary">.</span><span class="logo-caption"
-        >Personal portfolio & field notes</span
-    ></a
->
+<a href="/" class="logo" aria-label={`${site.name} — home`}>{site.name}</a>
 <style>
     .logo {
-        display: block;
-        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-size: clamp(2rem, 4vw, 3rem);
         font-weight: 500;
         line-height: 1;
         letter-spacing: -0.08em;
         text-decoration: none;
         text-transform: uppercase;
-    }
-    .logo-caption {
-        display: block;
-        font-size: 0.6rem;
-        letter-spacing: 0.09em;
-        margin-top: var(--space-1);
-        line-height: 1.4;
     }
 </style>

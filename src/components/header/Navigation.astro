@@ -1,64 +1,114 @@
 ---
+import { Icon } from "astro-icon/components";
 import { isNavigationItemActive, navigationItems } from "../../config/site";
+
+const items = navigationItems.map(({ href, label }) => ({
+    href,
+    label,
+    isActive: isNavigationItemActive(Astro.url.pathname, href),
+}));
 ---
 
-<nav class="tabs site-tabs" aria-label="Primary navigation">
-    {
-        navigationItems.map(({ href, label }, index) => (
-            <a
-                href={href}
-                class:list={["tab", { "tab-active": isNavigationItemActive(Astro.url.pathname, href) }]}
-                aria-current={isNavigationItemActive(Astro.url.pathname, href) ? "page" : undefined}
-            >
-                <span class="tab-number" aria-hidden="true">
-                    0{index + 1}
-                </span>
-                {label}
-                <span class="tab-arrow" aria-hidden="true">
-                    ↗
-                </span>
-            </a>
-        ))
-    }
-</nav>
+<div class="tabs-row">
+    <button class="btn btn-ghost btn-square tabs-arrow" type="button" data-tabs-prev aria-label="Previous section">
+        <Icon name="ic:baseline-chevron-left" aria-hidden="true" />
+    </button>
+    <nav class="tabs site-tabs" aria-label="Primary navigation">
+        {
+            items.map(({ href, label, isActive }) => (
+                <a
+                    href={href}
+                    class:list={["tab", { "tab-active": isActive }]}
+                    aria-current={isActive ? "page" : undefined}
+                >
+                    {label}
+                </a>
+            ))
+        }
+    </nav>
+    <button class="btn btn-ghost btn-square tabs-arrow" type="button" data-tabs-next aria-label="Next section">
+        <Icon name="ic:baseline-chevron-right" aria-hidden="true" />
+    </button>
+</div>
 <style>
+    .tabs-row {
+        align-items: stretch;
+        display: flex;
+    }
     .site-tabs {
         flex-wrap: nowrap;
+        flex: 1 1 auto;
+    }
+    .tabs-arrow {
+        align-items: center;
+        border: 0;
+        display: inline-flex;
+        flex: 0 0 auto;
+        height: auto;
+        justify-content: center;
+        min-height: 0;
+        min-width: 0;
+        padding: 0;
+        width: 2.25rem;
     }
     .site-tabs > .tab {
-        min-height: 2.8rem;
-        min-width: 10rem;
-        gap: var(--space-3);
+        min-height: 2.75rem;
+        min-width: 8rem;
         border-right: var(--rule-width) solid var(--rule-color);
         color: var(--color-base-content);
-        text-transform: uppercase;
+        font-family: var(--font-mono);
         font-size: var(--text-small);
-        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-radius: 0;
     }
     .site-tabs > .tab:first-child {
         border-left: var(--rule-width) solid var(--rule-color);
     }
     .site-tabs > .tab-active {
-        background: var(--color-primary);
-        color: var(--color-primary-content);
+        box-shadow: inset 0 -3px 0 var(--color-primary);
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .site-tabs > .tab-active:hover {
+        text-decoration: none;
     }
     .site-tabs > .tab:hover {
-        background: var(--color-base-content);
-        color: var(--color-base-100);
-    }
-    .tab-number {
-        font-size: 0.65rem;
-    }
-    .tab-arrow {
-        margin-left: var(--space-3);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
     }
     @media (max-width: 700px) {
-        .site-tabs {
-            width: 100%;
-        }
         .site-tabs > .tab {
-            flex: 1;
-            min-width: 0;
+            min-width: 7rem;
         }
     }
 </style>
+<script>
+    const tabsRow = document.querySelector<HTMLElement>(".tabs-row");
+    if (tabsRow) {
+        const tabs = [...tabsRow.querySelectorAll<HTMLAnchorElement>(".site-tabs > .tab")];
+        const prev = tabsRow.querySelector<HTMLButtonElement>("[data-tabs-prev]")!;
+        const next = tabsRow.querySelector<HTMLButtonElement>("[data-tabs-next]")!;
+
+        const activeIndex = () => tabs.findIndex((tab) => tab.getAttribute("aria-current") === "page");
+        const startIndex = () => {
+            const index = activeIndex();
+            return index === -1 ? 0 : index;
+        };
+
+        const step = (direction: number) => {
+            const target = tabs[startIndex() + direction];
+            if (target) target.click();
+        };
+
+        const syncArrows = () => {
+            const position = startIndex();
+            prev.disabled = position <= 0;
+            next.disabled = position >= tabs.length - 1;
+        };
+        syncArrows();
+
+        prev.addEventListener("click", () => step(-1));
+        next.addEventListener("click", () => step(1));
+    }
+</script>

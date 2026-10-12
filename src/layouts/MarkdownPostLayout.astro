@@ -11,41 +11,22 @@ const { title, description, image } = post.data;
 
 <BaseLayout pageTitle={title} pageDescription={description} pageImage={image} pageType="article">
     <div class="page-container page-top article-page">
-        <a class="btn btn-ghost back-link" href="/blog"><span aria-hidden="true">←</span> All notes</a>
+        <a class="link back-link" href="/blog"><span aria-hidden="true">←</span> All notes</a>
         <NoteHeader post={post} isDetail />
         <article class="post-content"><slot /></article>
-        <div class="article-end">
-            <span class="page-kicker">Thanks for reading.</span><a class="btn btn-outline" href="/blog"
-                >Back to notes <span aria-hidden="true">↗</span></a
-            >
-        </div>
     </div>
 </BaseLayout>
 <style>
+    .article-page {
+        max-width: var(--content-max);
+    }
     .back-link {
-        margin-bottom: var(--space-5);
+        display: inline-block;
+        margin-bottom: var(--content-inset);
     }
     .post-content {
-        max-width: var(--text-max);
-        margin: var(--space-9) auto;
+        margin-top: var(--section-gap);
         overflow-wrap: anywhere;
-    }
-    .post-content :global(h1),
-    .post-content :global(h2),
-    .post-content :global(h3) {
-        font-weight: 500;
-        letter-spacing: -0.05em;
-        line-height: 1.25;
-        margin: var(--space-8) 0 var(--space-4);
-    }
-    .post-content :global(h1) {
-        font-size: var(--text-card-title);
-    }
-    .post-content :global(h2) {
-        font-size: var(--text-section-title);
-    }
-    .post-content :global(h3) {
-        font-size: var(--text-lead);
     }
     .post-content :global(p),
     .post-content :global(ul),
@@ -68,7 +49,7 @@ const { title, description, image } = post.data;
     .post-content :global(blockquote) {
         background: var(--color-base-200);
         border-left: 3px solid var(--color-primary);
-        padding: var(--space-5);
+        padding: var(--content-inset);
         margin-block: var(--space-6);
     }
     .post-content :global(blockquote p:last-child) {
@@ -83,7 +64,7 @@ const { title, description, image } = post.data;
         border: 1px solid var(--color-base-300);
         border-radius: var(--radius-box);
         overflow-x: auto;
-        padding: var(--space-5);
+        padding: var(--content-inset);
         margin-block: var(--space-6);
     }
     .post-content :global(pre code) {
@@ -91,19 +72,8 @@ const { title, description, image } = post.data;
         padding: 0;
     }
     .post-content :global(a) {
-        color: var(--color-primary);
+        color: var(--color-secondary);
         text-decoration: underline;
         text-underline-offset: 0.2em;
-    }
-    .article-end {
-        max-width: var(--text-max);
-        margin-inline: auto;
-        border-top: 1px solid var(--color-base-300);
-        padding-top: var(--space-6);
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--space-4);
     }
 </style>
