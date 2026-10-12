@@ -1,6 +1,6 @@
 # Astro Portfolio
 
-Personal portfolio and Markdown notes built with Astro and TypeScript.
+Personal portfolio and Markdown notes built with Astro, TypeScript, Tailwind CSS 4, and daisyUI 5. Garden and Forest themes use orange primary controls, a retro editorial layout, and nearly square 2px corners; the original ASCII cat stays part of the About page.
 
 ## Development with mise
 

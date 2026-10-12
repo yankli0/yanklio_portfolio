@@ -19,7 +19,7 @@ This agent-neutral skill works with any assistant that can read Markdown. It ada
 ## Component references
 
 - [Buttons](references/button.md): actions and link controls.
-- [Navbar](references/navbar.md) and [menu](references/menu.md): site navigation.
+- [Navbar](references/navbar.md), [tabs](references/tab.md), and [menu](references/menu.md): site navigation. Page-navigation tabs remain anchors with `aria-current`; reserve ARIA tab roles for actual in-page tab panels.
 - [Card](references/card.md) and [hero](references/hero.md): grouped content and introductions.
 - [Badge](references/badge.md): tags and status.
 - [Table](references/table.md): tabular information.

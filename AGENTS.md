@@ -36,9 +36,9 @@ Use imports first in Astro frontmatter, explicit types, destructured props, rela
 ## Design system
 
 - Use daisyUI 5 components with Tailwind 4. Prefer `btn`, `navbar`, `menu`, `card`, `badge`, and `table` over custom imitations.
-- Garden is the light theme; Forest is dark. Keep theme corner radii at `0.125rem` (2px), including buttons, badges, and cards.
-- Use semantic daisyUI color roles and matching content colors. Do not reintroduce Gruvbox palettes, paper-button shadows, or raw theme colors.
-- Keep layouts editorial and spacious; no Bento card grids. Use scoped CSS for component-specific layout, not duplicated component styling.
+- Garden is the light theme, with warm paper surfaces; Forest is dark. Both use orange as primary with a dark primary-content foreground. Keep theme corner radii at `0.125rem` (2px), including buttons, badges, and cards.
+- Use semantic daisyUI color roles and matching content colors. Keep raw theme overrides in global.css. Use shared rule and pressed-shadow tokens for the retro treatment rather than reintroducing a separate Gruvbox palette or paper-button system.
+- Keep a retro magazine feel: a compact masthead, joined navigation tabs, ruled sections, and restrained orange blocks; no Bento card grids. Navigation tabs are real page links with aria-current, not ARIA tab panels. Use scoped CSS for component-specific layout, not duplicated component styling.
 - Check existing tokens before adding repeated dimensions. Unique ASCII-art sizing may remain local.
 - Use `700px` for the primary mobile breakpoint and `420px` only where narrow-phone layout requires it. Avoid horizontal overflow; mobile controls should use available width.
 
@@ -62,7 +62,7 @@ Apply stored/system theme before paint. Keep the inline initializer and theme sc
 
 - Run `mise run validate` before handoff.
 - Visually check About, Notes, an article, and 404 at desktop and mobile widths when shared UI changes.
-- Check horizontal overflow, keyboard focus, navigation state, mobile menu, disabled controls, both themes, persistence, and footer spacing.
+- Check horizontal overflow, keyboard focus, navigation state, mobile navigation tabs, disabled controls, both themes, persistence, and footer spacing.
 - Inspect generated RSS, robots, and metadata when URL/metadata behavior changes.
 - Remove temporary screenshots, scripts, and logs from the repository.
 - Preserve unrelated dirty-worktree changes. Stage only the intended files.
