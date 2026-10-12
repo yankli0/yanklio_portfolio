@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import Logo from "../Logo.astro";
 import Navigation from "./Navigation.astro";
 import ThemeIcon from "./ThemeIcon.astro";
@@ -7,155 +6,115 @@ import ThemeIcon from "./ThemeIcon.astro";
 
 <header class="site-header bg-base-100 layout-rule--bottom">
     <div class="masthead-strip bg-base-content text-base-100">
-        <span class="sr-only">Make it make sense</span>
-        <div class="masthead-ticker" aria-hidden="true">
-            <div class="masthead-ticker__group">
-                <span class="masthead-ticker__unit">
-                    <span>Make it make sense</span>
-                    <span class="text-primary">✦</span>
-                    <span data-ticker-phrase>Brewing</span>
-                    <span class="text-primary">✦</span>
-                </span>
-            </div>
-        </div>
-        <button
-            class="btn btn-ghost ticker-pause"
-            type="button"
-            aria-label="Pause scrolling banner"
-            hidden
-            data-ticker-pause
-        >
-            <Icon class="pause-icon" name="ic:baseline-pause" aria-hidden="true" />
-            <Icon class="play-icon" name="ic:baseline-play-arrow" aria-hidden="true" />
-        </button>
+        <p class="session-status">
+            <span class="session-status__glyph" aria-hidden="true" data-session-glyph>✻</span>
+            <span class="session-status__phrase" data-session-phrase>Syncing a new album</span>
+            <span class="sr-only">
+                Live activity indicator. The symbol and wording change automatically and have no controls.
+            </span>
+        </p>
     </div>
     <div class="navbar page-container masthead">
         <Logo />
-        <div class="masthead-details"><p>Full-stack developer<br /><span>Poznań, PL</span></p><ThemeIcon /></div>
+        <div class="masthead-details">
+            <p>Full-stack developer<br /><span>Poznań, PL</span></p>
+            <ThemeIcon />
+        </div>
     </div>
-    <div class="navigation-row bg-base-200 layout-rule--top"><div class="page-container"><Navigation /></div></div>
+    <div class="navigation-row bg-base-200 layout-rule--top">
+        <div class="page-container"><Navigation /></div>
+    </div>
 </header>
+
 <script>
-    const phrases = [
-        "Baking",
-        "Beaming",
-        "Beboppin'",
-        "Befuddling",
-        "Billowing",
-        "Blanching",
-        "Bloviating",
-        "Boogieing",
-        "Boondoggling",
-        "Brewing",
-        "Architecting",
-        "Actualizing",
-    ];
-    document.querySelectorAll<HTMLElement>(".masthead-ticker").forEach((ticker) => {
-        const pause = ticker.parentElement!.querySelector<HTMLButtonElement>("[data-ticker-pause]")!;
-        pause.hidden = false;
-        pause.setAttribute("aria-label", "Pause scrolling banner");
-        pause.addEventListener("click", () => {
-            const paused = ticker.dataset.paused !== "true";
-            ticker.dataset.paused = String(paused);
-            pause.dataset.paused = String(paused);
-            pause.setAttribute("aria-label", paused ? "Resume scrolling banner" : "Pause scrolling banner");
-        });
-        const group = ticker.querySelector<HTMLElement>(".masthead-ticker__group")!;
-        const unit = group.querySelector<HTMLElement>(".masthead-ticker__unit")!;
-        unit.querySelector("[data-ticker-phrase]")!.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    const glyphInterval = 300;
+    const phraseInterval = 10000;
+    const phrasesUrl = "/data/session-phrases.json";
+    const glyphs = ["·", "✻", "✽", "✶", "✳", "✢"];
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        const fitTicker = () => {
-            ticker.querySelectorAll(".masthead-ticker__group").forEach((copy) => {
-                if (copy !== group) copy.remove();
-            });
-            group.replaceChildren(unit);
-            const unitWidth = unit.getBoundingClientRect().width;
-            if (!unitWidth) return;
-            const count = Math.ceil(ticker.parentElement!.clientWidth / unitWidth);
-            for (let index = 1; index < count; index++) {
-                group.append(unit.cloneNode(true));
-            }
-            const distance = group.getBoundingClientRect().width;
-            ticker.append(group.cloneNode(true));
-            ticker.style.setProperty("--ticker-distance", `${distance}px`);
-            ticker.style.setProperty("--ticker-duration", `${distance / 42}s`);
-            ticker.dataset.ready = "true";
-        };
+    const phrase = document.querySelector<HTMLElement>("[data-session-phrase]");
+    const glyph = document.querySelector<HTMLElement>("[data-session-glyph]");
 
-        void document.fonts.ready.then(() => {
-            fitTicker();
-            new ResizeObserver(fitTicker).observe(ticker.parentElement!);
+    if (!reducedMotion && glyph) {
+        let glyphIndex = Math.max(glyphs.indexOf(glyph.textContent ?? ""), 0);
+        setInterval(() => {
+            glyphIndex = (glyphIndex + 1) % glyphs.length;
+            glyph.textContent = glyphs[glyphIndex] ?? "";
+        }, glyphInterval);
+    }
+
+    if (!reducedMotion && phrase) {
+        addEventListener("load", () => {
+            void fetch(phrasesUrl)
+                .then((response) => response.json())
+                .then((items: string[]) => {
+                    if (!Array.isArray(items) || items.length < 2) return;
+                    let i = Math.max(items.indexOf(phrase.textContent ?? ""), 0);
+                    phrase.classList.add("session-status__phrase--sweeping");
+                    setInterval(() => {
+                        i = (i + 1 + Math.floor(Math.random() * (items.length - 1))) % items.length;
+                        phrase.textContent = items[i] ?? "";
+                        phrase.animate(
+                            [
+                                { opacity: 0, transform: "translateY(0.35em)" },
+                                { opacity: 1, transform: "translateY(0)" },
+                            ],
+                            { duration: 260, easing: "ease-out" },
+                        );
+                    }, phraseInterval);
+                })
+                .catch(() => {});
         });
-    });
+    }
 </script>
+
 <style>
     .masthead-strip {
-        position: relative;
         padding-block: var(--space-1);
-        overflow: hidden;
         font-family: var(--font-mono);
         font-size: 0.875rem;
         line-height: 1.5;
     }
-    .masthead-ticker {
-        display: flex;
-        width: max-content;
-    }
-    .masthead-ticker[data-ready] {
-        animation: ticker-scroll var(--ticker-duration) linear infinite;
-    }
-    .masthead-ticker[data-paused="true"] {
-        animation-play-state: paused;
-    }
-    .ticker-pause {
-        position: absolute;
-        inset: 0 0 0 auto;
-        height: 100%;
-        min-height: 0;
-        border: 0;
-        border-left: var(--rule-width) solid currentColor;
-        border-radius: 0;
-        background: var(--color-base-content);
-        color: var(--color-base-100);
-        padding-inline: var(--space-2);
-    }
-    .ticker-pause:focus-visible {
-        outline: 2px solid currentColor;
-        outline-offset: -4px;
-    }
-    .ticker-pause :global(.play-icon),
-    .ticker-pause[data-paused="true"] :global(.pause-icon) {
-        display: none;
-    }
-    .ticker-pause[data-paused="true"] :global(.play-icon) {
-        display: block;
-    }
-    .ticker-pause[hidden] {
-        display: none;
-    }
-    .masthead-ticker__group {
-        display: flex;
-        flex-shrink: 0;
-    }
-    .masthead-ticker__unit {
-        display: flex;
+    .session-status {
+        --sweep-dim: color-mix(in oklab, var(--color-accent) 58%, var(--color-base-content));
         align-items: center;
+        color: var(--color-accent);
+        display: flex;
+        gap: var(--space-2);
+        justify-content: center;
+        margin: 0;
+    }
+    .session-status__glyph {
         flex: none;
-        gap: var(--space-7);
-        white-space: nowrap;
-        padding-right: var(--space-7);
+        line-height: 1;
+        width: 1.1em;
     }
-    @keyframes ticker-scroll {
+    .session-status__phrase {
+        color: var(--color-accent);
+    }
+    .session-status__phrase--sweeping {
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-image: linear-gradient(
+            90deg,
+            var(--sweep-dim) 0%,
+            var(--sweep-dim) 38%,
+            var(--color-accent) 50%,
+            var(--sweep-dim) 62%,
+            var(--sweep-dim) 100%
+        );
+        background-size: 200% 100%;
+        color: transparent;
+        animation: session-sweep 2.4s linear infinite alternate;
+        -webkit-text-fill-color: transparent;
+    }
+    @keyframes session-sweep {
+        from {
+            background-position: 100% 0;
+        }
         to {
-            transform: translateX(calc(-1 * var(--ticker-distance)));
-        }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .ticker-pause {
-            display: none;
-        }
-        .masthead-ticker[data-ready] {
-            animation: none;
+            background-position: 0% 0;
         }
     }
     .masthead {
@@ -165,8 +124,8 @@ import ThemeIcon from "./ThemeIcon.astro";
         width: calc(100% - var(--page-gutter) * 2);
     }
     .masthead-details {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: var(--space-5);
     }
     .masthead-details p {
@@ -176,6 +135,14 @@ import ThemeIcon from "./ThemeIcon.astro";
     }
     .navigation-row {
         padding-inline: var(--space-2);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .session-status__phrase--sweeping {
+            animation: none;
+            background-image: none;
+            color: var(--color-accent);
+            -webkit-text-fill-color: currentColor;
+        }
     }
     @media (max-width: 700px) {
         .masthead-details p {

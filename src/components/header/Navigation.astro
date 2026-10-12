@@ -83,32 +83,4 @@ const items = navigationItems.map(({ href, label }) => ({
         }
     }
 </style>
-<script>
-    const tabsRow = document.querySelector<HTMLElement>(".tabs-row");
-    if (tabsRow) {
-        const tabs = [...tabsRow.querySelectorAll<HTMLAnchorElement>(".site-tabs > .tab")];
-        const prev = tabsRow.querySelector<HTMLButtonElement>("[data-tabs-prev]")!;
-        const next = tabsRow.querySelector<HTMLButtonElement>("[data-tabs-next]")!;
 
-        const activeIndex = () => tabs.findIndex((tab) => tab.getAttribute("aria-current") === "page");
-        const startIndex = () => {
-            const index = activeIndex();
-            return index === -1 ? 0 : index;
-        };
-
-        const step = (direction: number) => {
-            const target = tabs[startIndex() + direction];
-            if (target) target.click();
-        };
-
-        const syncArrows = () => {
-            const position = startIndex();
-            prev.disabled = position <= 0;
-            next.disabled = position >= tabs.length - 1;
-        };
-        syncArrows();
-
-        prev.addEventListener("click", () => step(-1));
-        next.addEventListener("click", () => step(1));
-    }
-</script>
