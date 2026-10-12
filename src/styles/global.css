@@ -108,16 +108,17 @@
         width: 1.15rem;
         height: 1.15rem;
     }
-    &:not(:disabled):active {
-        transform: translate(var(--press-offset), var(--press-offset));
-        box-shadow: none;
-    }
     &:disabled {
         box-shadow: none;
     }
 }
 
 @utility btn-ghost {
+    box-shadow: none;
+}
+
+.btn:not(.btn-ghost):not(:disabled):active {
+    transform: translate(var(--press-offset), var(--press-offset));
     box-shadow: none;
 }
 
