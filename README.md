@@ -38,3 +38,5 @@ For package maintenance, use `mise exec -- npm install <package>`. The npm scrip
 - `src/styles/`: Global styles, theme setup, fonts, and layout tokens.
 
 The canonical URL is configured in `astro.config.mjs`. Optional post images, RSS, sitemap, and fallback social metadata are supported.
+
+UI work uses the shared, agent-neutral [daisyUI skill](skills/daisyui/SKILL.md). See [AGENTS.md](AGENTS.md) for project conventions.
