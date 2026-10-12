@@ -1,43 +1,32 @@
 ---
 import { site } from "../../config/site";
-
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-    <div class="footer-inner">
-        <span>© {currentYear} {site.handle.toUpperCase()}</span>
+<footer class="site-footer bg-base-200">
+    <div class="footer footer-horizontal page-container footer-inner">
+        <span>© {currentYear} {site.handle}</span>
         <span>Made with love and coffee | v0.8.18</span>
         <span>{site.location}</span>
     </div>
 </footer>
-
 <style>
     .site-footer {
-        border-top: var(--border-width) solid var(--line);
-        height: 100%;
+        border-top: var(--rule-width) solid var(--rule-color);
+        padding: var(--space-6) var(--page-gutter);
     }
     .footer-inner {
-        align-items: center;
-        color: var(--fg3);
         display: flex;
-        font-size: var(--text-meta);
-        height: 100%;
+        align-items: center;
         justify-content: space-between;
-        margin: 0 auto;
-        padding: 0 var(--page-gutter);
-        text-transform: uppercase;
-    }
-    @media (min-width: 701px) {
-        .footer-inner {
-            padding-left: calc(var(--rail-width) + var(--page-gutter));
-        }
+        gap: var(--space-4);
+        font-size: var(--text-small);
     }
     @media (max-width: 700px) {
         .footer-inner {
             flex-direction: column;
-            gap: var(--space-1);
-            padding: var(--space-3) var(--page-gutter);
+            gap: var(--space-2);
+            text-align: center;
         }
     }
 </style>

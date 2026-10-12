@@ -1,71 +1,64 @@
 ---
 import { isNavigationItemActive, navigationItems } from "../../config/site";
-
-interface Props {
-    variant?: "desktop" | "mobile";
-}
-
-const currentPath = Astro.url.pathname;
-const { variant = "desktop" } = Astro.props;
 ---
 
-<nav
-    class:list={["navigation", `navigation--${variant}`]}
-    aria-label={variant === "mobile" ? "Mobile navigation" : "Primary navigation"}
->
+<nav class="tabs site-tabs" aria-label="Primary navigation">
     {
-        navigationItems.map(({ href, label }) => (
+        navigationItems.map(({ href, label }, index) => (
             <a
                 href={href}
-                class:list={[
-                    "navigation__link",
-                    "paper-button",
-                    { "is-active": isNavigationItemActive(currentPath, href) },
-                ]}
-                aria-current={isNavigationItemActive(currentPath, href) ? "page" : undefined}
+                class:list={["tab", { "tab-active": isNavigationItemActive(Astro.url.pathname, href) }]}
+                aria-current={isNavigationItemActive(Astro.url.pathname, href) ? "page" : undefined}
             >
+                <span class="tab-number" aria-hidden="true">
+                    0{index + 1}
+                </span>
                 {label}
+                <span class="tab-arrow" aria-hidden="true">
+                    ↗
+                </span>
             </a>
         ))
     }
 </nav>
-
 <style>
-    .navigation {
-        display: flex;
-        gap: var(--space-1);
+    .site-tabs {
+        flex-wrap: nowrap;
     }
-    .navigation__link {
-        background: var(--bg_hard);
-        font-size: var(--text-nav);
-        font-weight: var(--weight-bold);
-        letter-spacing: 0.05em;
-        padding: 0.55rem 0.85rem;
-        text-decoration: none;
+    .site-tabs > .tab {
+        min-height: 2.8rem;
+        min-width: 10rem;
+        gap: var(--space-3);
+        border-right: var(--rule-width) solid var(--rule-color);
+        color: var(--color-base-content);
         text-transform: uppercase;
+        font-size: var(--text-small);
+        letter-spacing: 0.06em;
     }
-    .navigation__link:hover {
-        background: var(--bg2);
+    .site-tabs > .tab:first-child {
+        border-left: var(--rule-width) solid var(--rule-color);
     }
-    .navigation__link.is-active {
-        background: var(--nav-accent);
-        color: var(--black);
-        pointer-events: none;
+    .site-tabs > .tab-active {
+        background: var(--color-primary);
+        color: var(--color-primary-content);
     }
-    .navigation--mobile {
-        display: grid;
-        gap: 0.65rem;
+    .site-tabs > .tab:hover {
+        background: var(--color-base-content);
+        color: var(--color-base-100);
     }
-    .navigation--mobile .navigation__link {
-        background: var(--bg_hard);
-        border-width: 3px;
-        font-size: 0.85rem;
-        justify-content: flex-start;
-        padding: 0.8rem 1rem;
-        text-align: left;
+    .tab-number {
+        font-size: 0.65rem;
     }
-    .navigation--mobile .navigation__link.is-active {
-        background: var(--nav-accent);
-        color: var(--black);
+    .tab-arrow {
+        margin-left: var(--space-3);
+    }
+    @media (max-width: 700px) {
+        .site-tabs {
+            width: 100%;
+        }
+        .site-tabs > .tab {
+            flex: 1;
+            min-width: 0;
+        }
     }
 </style>

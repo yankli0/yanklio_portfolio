@@ -1,144 +1,89 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogList from "../components/BlogList.astro";
-import BlogHeroArt from "../components/BlogHeroArt.astro";
+
 import RSSButton from "../components/header/RSSButton.astro";
 import { getBlogPosts } from "../data/blog";
-
 const allPosts = await getBlogPosts();
 ---
 
 <BaseLayout pageTitle="Notes" pageDescription="Notes on web development, programming, and technology.">
-    <div class="page-container page-top blog-page">
-        <div class="archive-header">
-            <header class="archive-intro">
-                <h1>Notes</h1>
-                <p>
+    <div class="page-container page-top">
+        <section class="archive-intro" aria-labelledby="archive-title">
+            <div>
+                <h1 id="archive-title" class="page-title">Notes<span class="text-primary">.</span></h1>
+                <p class="archive-description">
                     I write down the things that make me curious—technology, games, music, and whatever comes next.
                     There is always something interesting to learn.
                 </p>
-            </header>
-            <BlogHeroArt />
-        </div>
+            </div>
+        </section>
         <section class="archive-sources" aria-labelledby="availability-title">
-            <span id="availability-title">Available on:</span>
+            <div>
+                <p id="availability-title" class="page-kicker">Available on</p>
+            </div>
             <div class="source-buttons">
                 <RSSButton />
                 <button
-                    class="source-button compact-button paper-button"
+                    class="btn btn-outline"
                     type="button"
                     disabled
                     aria-label="Additional publishing destination coming soon">???</button
                 >
                 <button
-                    class="source-button compact-button paper-button"
+                    class="btn btn-outline"
                     type="button"
                     disabled
                     aria-label="Additional publishing destination coming soon">???</button
                 >
             </div>
         </section>
-        <div class="archive-list">
-            <BlogList posts={allPosts} />
+        <div class="archive-heading section-rule">
+            <h2>All notes</h2><span class="badge badge-outline">{String(allPosts.length).padStart(2, "0")}</span>
         </div>
+        <BlogList posts={allPosts} />
     </div>
 </BaseLayout>
-
 <style>
-    .archive-header {
-        align-items: center;
-        display: grid;
-        gap: var(--space-9);
-        grid-template-columns: minmax(0, 1fr) clamp(17rem, 34vw, 24rem);
-        padding-top: var(--hero-padding-top);
+    .archive-intro {
+        max-width: var(--text-max);
     }
-    .archive-intro h1 {
-        font-size: var(--text-page-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: var(--leading-tight);
-        margin: 0;
+    h1 {
+        font-size: var(--text-section-title);
+        margin-bottom: var(--space-4);
     }
-    .archive-intro p {
-        color: var(--fg2);
+    .archive-description {
         line-height: var(--leading-body);
-        margin: var(--space-6) 0 0;
-        max-width: 38rem;
     }
     .archive-sources {
-        display: grid;
-        gap: 0.7rem;
-        margin-top: var(--space-8);
-        width: 100%;
-    }
-    .archive-sources > span {
-        color: var(--accent);
-        font-size: var(--text-lead);
-        font-weight: var(--weight-medium);
-        letter-spacing: -0.04em;
-        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: var(--space-5);
+        margin-block: var(--space-5) var(--space-8);
     }
     .source-buttons {
         display: flex;
-        flex-direction: row;
         gap: var(--space-2);
-        width: 100%;
     }
-    .source-buttons :global(.rss-button),
-    .source-button {
-        flex: 1 1 0;
-        min-width: 0;
-        width: 100%;
+    .archive-heading {
+        margin-bottom: var(--space-5);
     }
-    .source-button {
-        background: var(--bg);
-        color: var(--fg3);
-        cursor: not-allowed;
-    }
-    .source-button:disabled {
-        box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--button-shadow);
-        pointer-events: none;
-    }
-    .archive-list {
-        border-top: var(--border-width) solid var(--line);
-        margin-top: var(--space-9);
-        padding: var(--space-9) 0;
-    }
-    .archive-list :global(.blog-list) {
-        padding-top: 0;
+    .archive-heading h2 {
+        font-size: var(--text-body);
     }
     @media (max-width: 700px) {
-        .blog-page {
-            padding-top: var(--space-8);
-        }
-        .archive-header {
-            display: block;
-            padding-top: var(--space-4);
-        }
-        .archive-intro p {
-            margin-top: var(--space-4);
-        }
         .archive-sources {
-            margin: var(--space-7) 0 0;
-            width: 100%;
-        }
-        .archive-sources > span {
-            text-align: left;
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--space-2);
         }
         .source-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
             width: 100%;
         }
-        .source-buttons :global(.rss-button),
-        .source-button {
-            flex: none;
-            min-height: var(--control-height);
-        }
-        .archive-list {
-            margin-top: var(--space-7);
-            padding: var(--space-7) 0 2.2rem;
+        .source-buttons > :global(*) {
+            flex: 1;
+            min-width: 0;
+            min-height: 2.75rem;
         }
     }
 </style>

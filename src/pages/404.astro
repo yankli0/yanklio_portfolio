@@ -3,56 +3,39 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout pageTitle="Not found">
-    <section class="not-found" aria-labelledby="not-found-title">
-        <p class="error-code" aria-hidden="true">404</p>
-        <p class="page-kicker">Route unavailable</p>
-        <h1 id="not-found-title">Nothing here.</h1>
-        <p class="error-message">The page may have moved, or it never existed.</p>
-        <a class="paper-button action-button" href="/">
-            Back home <span class="action-button__icon" aria-hidden="true">←</span>
-        </a>
+    <section class="hero page-container not-found" aria-labelledby="not-found-title">
+        <div class="hero-content error-content">
+            <p class="error-code text-primary" aria-hidden="true">404</p>
+            <p class="page-kicker">Route unavailable</p>
+            <h1 id="not-found-title">Nothing here.</h1>
+            <p class="error-message">The page may have moved, or it never existed.</p>
+            <a class="btn btn-primary" href="/"><span aria-hidden="true">←</span> Back home</a>
+        </div>
     </section>
 </BaseLayout>
-
 <style>
     .not-found {
-        align-items: center;
-        display: flex;
+        min-height: 70svh;
+        padding-block: var(--space-9);
+    }
+    .error-content {
         flex-direction: column;
-        height: 100%;
-        justify-content: center;
-        margin: 0 auto;
-        max-width: var(--content-max);
-        min-height: 0;
-        padding: var(--space-6) 0;
         text-align: center;
+        gap: var(--space-5);
+        padding: 0;
     }
     .error-code {
-        color: var(--accent);
-        font-size: clamp(7rem, 20vw, 14rem);
-        font-weight: var(--weight-bold);
-        letter-spacing: -0.14em;
-        line-height: 0.65;
-        margin: 0 0 var(--space-7);
-        padding-right: 0.14em;
+        font-size: clamp(6rem, 20vw, 13rem);
+        letter-spacing: -0.1em;
+        line-height: 1;
     }
-    .not-found h1 {
+    h1 {
         font-size: var(--text-section-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: var(--leading-tight);
-        margin: var(--space-3) 0;
+        line-height: 1.1;
+        letter-spacing: -0.06em;
     }
     .error-message {
-        color: var(--fg2);
-        line-height: var(--leading-body);
-        margin: 0 0 var(--space-6);
         max-width: 30rem;
-    }
-    @media (max-width: 700px) {
-        .not-found {
-            min-height: calc(100svh - var(--header-height));
-            padding: var(--space-9) 0;
-        }
+        line-height: var(--leading-body);
     }
 </style>

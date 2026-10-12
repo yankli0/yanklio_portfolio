@@ -2,23 +2,6 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<a class="compact-button paper-button rss-button" href="/rss.xml" aria-label="RSS feed">
-    <Icon name="ic:outline-rss-feed" aria-hidden="true" />
-    <span class="rss-text">rss feed</span>
+<a class="btn btn-outline rss-button" href="/rss.xml" aria-label="RSS feed">
+    <Icon name="ic:outline-rss-feed" aria-hidden="true" />RSS feed
 </a>
-
-<style>
-    .rss-button {
-        color: var(--fg1);
-        text-decoration: none;
-    }
-    .rss-button :global(svg) {
-        color: var(--orange-dim);
-    }
-    .rss-button:hover {
-        background-color: var(--bg2);
-    }
-    .rss-text {
-        text-transform: uppercase;
-    }
-</style>

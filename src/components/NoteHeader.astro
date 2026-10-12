@@ -1,193 +1,127 @@
 ---
 import type { BlogPost } from "../data/blog";
 import BlogTag from "./BlogTag.astro";
-
 interface Props {
     isDetail?: boolean;
     post: BlogPost;
 }
-
 const { post, isDetail = false } = Astro.props;
 const href = `/blog/${post.id}`;
-const day = post.data.pubDate.toLocaleDateString("en-US", { day: "2-digit" });
-const month = post.data.pubDate.toLocaleDateString("en-US", { month: "short" });
-const year = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric" });
-const longDate = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+const longDate = post.data.pubDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+});
 const Root = isDetail ? "header" : "article";
 const titleId = `note-${post.id.replace(/[^a-zA-Z0-9_-]/g, "-")}-title`;
 ---
 
-<Root class="note-header" aria-labelledby={titleId}>
-    <time class="note-header__date" datetime={post.data.pubDate.toISOString()} aria-label={longDate}>
-        <span>{month}</span>
-        <strong>{day}</strong>
-        <small>{year}</small>
-    </time>
-    <div class="note-header__content">
+<Root class:list={["card card-border note-header", { "note-header--detail": isDetail }]} aria-labelledby={titleId}>
+    <div class="card-body">
+        <div class="note-header__meta">
+            <time datetime={post.data.pubDate.toISOString()}>{longDate}</time><span>By {post.data.author}</span>
+        </div>
         {
             isDetail ? (
                 <h1 id={titleId}>{post.data.title}</h1>
             ) : (
-                <h2 id={titleId}>
-                    <a href={href}>{post.data.title}</a>
-                </h2>
+                <h3 id={titleId}>
+                    <a class="note-title-link" href={href}>
+                        {post.data.title}
+                    </a>
+                </h3>
             )
         }
-        <div class="note-header__summary"><span>{post.data.description}</span></div>
-        <div class="note-header__footer">
-            <div class="note-header__tags" role="list" aria-label="Tags">
+        <p class="note-header__summary">{post.data.description}</p>
+        <div class="card-actions note-header__footer">
+            <ul class="note-header__tags" aria-label="Tags">
                 {
                     post.data.tags.map((tag) => (
-                        <span role="listitem">
+                        <li>
                             <BlogTag text={tag} />
-                        </span>
+                        </li>
                     ))
                 }
-            </div>
+            </ul>
             {
                 isDetail ? (
-                    <button
-                        class="note-header__link note-header__link--current compact-button paper-button"
-                        type="button"
-                        disabled
-                        aria-current="page"
-                    >
-                        Open <span aria-hidden="true">→</span>
+                    <button class="btn btn-active current-note" type="button" disabled aria-current="page">
+                        Open <span aria-hidden="true">↗</span>
                     </button>
                 ) : (
-                    <a
-                        class="note-header__link compact-button paper-button"
-                        href={href}
-                        aria-label={`Open ${post.data.title}`}
-                    >
-                        Open <span aria-hidden="true">→</span>
+                    <a class="btn btn-outline" href={href} aria-label={`Open ${post.data.title}`}>
+                        Open <span aria-hidden="true">↗</span>
                     </a>
                 )
             }
         </div>
     </div>
 </Root>
-
 <style>
     .note-header {
-        border: var(--border-width) solid var(--line);
-        display: grid;
-        grid-template-columns: 10rem minmax(0, 1fr);
+        background: var(--color-base-200);
     }
-    .note-header__date {
-        align-items: center;
-        background: var(--accent);
-        border-right: var(--border-width) solid var(--line);
-        color: var(--bg);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: var(--space-4);
-        text-align: center;
+    .card-body {
+        gap: var(--space-5);
+        padding: var(--space-6);
     }
-    .note-header__date span,
-    .note-header__date small {
-        font-size: var(--text-small);
-        font-weight: var(--weight-medium);
-        letter-spacing: 0.12em;
+    .note-header__meta {
+        border-bottom: var(--rule-width) solid var(--rule-color);
+        padding-bottom: var(--space-3);
         text-transform: uppercase;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: var(--space-2);
+        font-size: var(--text-small);
+        color: var(--color-base-content);
     }
-    .note-header__date strong {
-        font-size: 4.75rem;
-        font-weight: var(--weight-bold);
-        letter-spacing: -0.13em;
-        line-height: 0.8;
-    }
-    .note-header__content {
-        min-width: 0;
-        padding: var(--space-5);
-    }
-    .note-header__content h1,
-    .note-header__content h2 {
+    h1,
+    h3 {
         font-size: var(--text-card-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: 0.9;
-        margin: 0 0 var(--space-4);
+        line-height: 1.2;
+        letter-spacing: -0.06em;
+        font-weight: 500;
+        max-width: 52rem;
     }
-    .note-header__content h2 a {
-        color: inherit;
+    .note-title-link {
         text-decoration: none;
     }
-    .note-header__summary {
-        align-items: flex-end;
-        color: var(--fg2);
-        display: flex;
-        gap: var(--space-6);
-        justify-content: space-between;
-        line-height: 1.7;
+    .note-title-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
     }
-    .note-header__summary > span {
+    .note-header__summary {
         max-width: var(--text-max);
+        line-height: var(--leading-body);
     }
     .note-header__footer {
         align-items: center;
-        display: flex;
-        gap: var(--space-3);
         justify-content: space-between;
-        margin-top: var(--space-4);
+        gap: var(--space-4);
     }
     .note-header__tags {
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-2);
     }
-    .note-header__link {
-        background: var(--surface);
-        color: var(--fg1);
-        flex: 0 0 var(--control-width);
-        text-decoration: none;
+    .current-note:disabled {
+        box-shadow: inset 0 2px 0 color-mix(in oklch, var(--color-base-content) 20%, transparent);
+        transform: translateY(1px);
     }
-    .note-header__link.paper-button:hover {
-        background: var(--surface);
-    }
-    .note-header__link--current:disabled {
-        box-shadow: none;
-        pointer-events: none;
-        transform: translate(var(--shadow-offset), var(--shadow-offset));
-    }
-    .note-header__link span {
-        color: var(--accent);
-        font-size: 1.1rem;
-    }
-
     @media (max-width: 700px) {
-        .note-header {
-            grid-template-columns: 6.5rem minmax(0, 1fr);
-        }
-        .note-header__date {
-            padding: var(--space-3) var(--space-2);
-        }
-        .note-header__date strong {
-            font-size: 3.2rem;
-        }
-        .note-header__content {
-            padding: var(--space-3);
-        }
-        .note-header__summary {
-            align-items: flex-start;
-            flex-direction: column;
-            gap: var(--space-3);
+        .card-body {
+            padding: var(--space-5);
         }
     }
-
     @media (max-width: 420px) {
-        .note-header {
-            display: block;
+        .note-header__footer {
+            align-items: stretch;
+            flex-direction: column;
         }
-        .note-header__date {
-            align-items: center;
-            border-bottom: var(--border-width) solid var(--line);
-            border-right: 0;
-            flex-direction: row;
-        }
-        .note-header__date strong {
-            font-size: 2.5rem;
+        .note-header__footer .btn {
+            width: 100%;
         }
     }
 </style>

@@ -1,79 +1,82 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import CatArt from "../components/CatArt.astro";
 import { site, socialLinks, toolboxGroups } from "../config/site";
 ---
 
 <BaseLayout
     pageDescription="Personal website and notes by Yaroslav, a full-stack developer working with TypeScript, React, Node.js, and Python."
 >
-    <div class="home-page">
+    <div class="page-container home-page">
         <section class="intro" aria-labelledby="intro-title">
             <div class="intro-copy">
-                <h1 id="intro-title">{site.name}</h1>
-                <p class="role">Full-stack developer</p>
+                <p class="page-kicker">Full-stack developer / {site.location}</p>
+                <h1 id="intro-title" class="page-title">{site.name}<span class="text-primary">.</span></h1>
                 <p class="intro-description">
                     I’m drawn to interesting technical products and the systems behind them. Most of my experience is in
-                    the JavaScript ecosystem, working across both frontend and backend. I’m also moving deeper into Java
-                    world and mastering cloud infrastructure and DevOps<br /><br />Based in Poznań, PL and open to
-                    remote work too
+                    the JavaScript ecosystem, working across both frontend and backend.
                 </p>
+                <p class="intro-description">
+                    I’m also moving deeper into Java world and mastering cloud infrastructure and DevOps.
+                </p>
+                <div class="intro-actions">
+                    <a class="btn btn-primary" href="/blog">Read my notes <span aria-hidden="true">↗</span></a>
+                    <span class="location-note">Based in Poznań, PL<br />Open to remote work too</span>
+                </div>
             </div>
-            <pre
-                class="ascii-art coffee-art"
-                aria-hidden="true">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣏⢻⣧⡀⠀⠀⠀⠀⠀⣠⣾⣿⠟⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⠾⢻⣻
-⠀⣴⡾⠿⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⢯⣿⣳⢦⡙⢿⣄⣀⣀⣠⣾⣫⣿⢿⡑⢺⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣶⠿⢟⣫⣭⣶⣿⣿⡿
-⣸⡟⠀⠀⣸⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⣤⣄⣀⣀⣼⠏⣼⣷⣭⡷⠟⠛⠉⡉⠉⢉⢭⠉⠛⠿⣿⣤⣿⣇⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⠾⢟⣫⣥⣶⣿⣿⣟⣷⣻⣿⠟⠀
-⣿⠀⠀⢰⣿⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠿⠛⠋⠉⠉⠉⠉⢻⡟⠀⣿⠟⠉⠤⠀⠀⢀⠀⠠⡇⠈⢣⠀⠉⠒⠙⢿⣿⡀⠀⠀⣀⣤⣶⠾⢟⣫⣽⣾⠿⣟⣯⣿⢿⡽⣾⡽⣾⣿⠏⠀⠀
-⣿⠀⠀⣸⣷⠀⠀⠀⠀⠀⠀⠀⣰⡿⢋⡤⠒⠁⠀⡀⠄⠀⢀⣿⢃⡶⠀⠀⠀⠀⠐⠈⠀⠀⠀⡇⠀⠘⡆⠀⠀⠀⠈⢻⣧⢀⣾⣿⣭⣷⠿⣟⣿⣽⡾⣿⣻⣟⡾⣯⣟⣷⣿⡿⠃⠀⠀⠀
-⢻⣧⠀⣇⠹⢷⣦⣀⡀⠀⠀⣼⢟⡴⠋⠀⠀⠠⠀⠄⠂⠀⢾⡿⢸⠇⠀⠈⠀⠀⠈⠀⠀⠁⠀⢷⠀⠀⣿⢀⠀⠀⡀⠀⢿⣿⣿⣿⣫⣾⡿⣟⡿⣾⣽⣳⣟⡾⣽⣳⣿⣿⡟⠀⠀⠀⠀⠀
-⠁⠻⣷⣝⣦⣤⣬⡽⡿⣿⣿⡏⠌⠀⠀⠄⠁⠀⠁⠀⠄⠈⣾⡇⠈⠀⠀⠀⠀⢹⣷⣤⣆⣼⣧⡼⠀⠀⠸⣿⣷⣷⣾⢿⣿⣿⣿⣧⣿⢯⡿⣽⣻⡿⠋⣿⣯⣟⣷⣿⣿⠏⠀⠀⠀⠀⠀⠀
-⠀⠀⠈⢙⣿⣷⣮⣷⣹⡶⣿⡈⠀⠀⠄⠀⠀⠀⠁⡐⠀⠠⢿⡇⠤⠚⠋⠉⠙⠒⠮⠭⠭⠭⠟⠃⠰⣷⡶⢈⠙⠒⢀⣾⣿⣿⣫⣿⡽⣯⣟⡷⣿⣤⣼⣿⣳⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀
-⠀⢠⣾⢟⢛⣿⠛⠛⠛⠿⣿⢰⡄⠀⢂⠈⡀⠀⠂⠀⠄⠀⢟⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠶⠿⠷⠾⠃⢀⣾⣿⣿⣳⣿⢯⣟⡷⣯⣟⣿⣻⣿⢿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢸⣷⣳⡜⢟⣁⡀⠀⠀⠻⠇⠙⢤⣀⡀⠀⠀⠀⢀⣾⡄⠀⠈⣿⣶⣄⣀⣀⣤⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣳⡿⣯⣟⣾⣽⣷⣿⣻⢯⣟⣿⣾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠸⣙⠛⠻⠿⢶⣯⣬⣐⣒⠠⠄⣀⡈⠉⠛⠋⢉⣿⠏⠁⠀⠘⣿⠟⠛⠉⠉⠉⠉⠙⣻⢷⣶⣶⣶⣶⣿⣿⣿⣿⣿⡿⣽⣻⣷⢿⣻⣽⣾⣷⣿⣿⣿⣿⠗⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠉⠀⠐⠠⠤⠉⢉⠛⠻⠿⢶⣶⣭⣥⣀⡘⣿⡈⠒⠒⠚⠁⠀⠀⠀⠀⠀⠐⣷⡝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⡽⣯⣿⣿⣾⣿⣿⠿⠛⠩⠐⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠂⠤⠌⣉⠙⠛⢿⣿⣶⣶⣶⣶⣾⣿⣿⣿⣷⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣳⣿⣿⣿⣿⣿⠿⠛⠉⠄⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠪⡻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠟⠻⠿⢿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠛⢻⣿⠿⠿⠛⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</pre>
+            <div class="cat-scene bg-base-200 rounded-box">
+                <div class="cat-scene__label"><span>AFK, probably</span><span aria-hidden="true">[ ~ ]</span></div>
+                <div class="cat-scene__art"><CatArt /></div>
+                <p class="cat-scene__caption">A little curiosity. A lot of coffee.</p>
+            </div>
         </section>
-
-        <section class="home-section" aria-labelledby="toolbox-title">
-            <header class="section-heading">
+        <section class="toolbox-section" aria-labelledby="toolbox-title">
+            <div class="section-heading section-rule">
+                <p class="page-kicker">01 / The everyday kit</p>
                 <h2 id="toolbox-title">Toolbox</h2>
-            </header>
-            <div class="skills-table">
-                {
-                    toolboxGroups.map(({ label, tools }) => (
-                        <div class="skill-row">
-                            <>
-                                <span>{label}</span>
-                                <p>{tools}</p>
-                            </>
-                        </div>
-                    ))
-                }
+            </div>
+            <div class="toolbox-table">
+                <table class="table">
+                    <caption class="sr-only">Technologies and tools I work with</caption>
+                    <tbody>
+                        {
+                            toolboxGroups.map(({ label, tools }) => (
+                                <tr>
+                                    <>
+                                        <th scope="row">{label}</th>
+                                        <td>
+                                            <div class="toolbox-tools">
+                                                {tools.split(" · ").map((tool) => (
+                                                    <span class="badge badge-outline">{tool}</span>
+                                                ))}
+                                            </div>
+                                        </td>
+                                    </>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
             </div>
         </section>
-
-        <section class="contact-block" aria-labelledby="links-title">
-            <h2 id="links-title">Find me online</h2>
-            <div class="contact-row">
+        <section class="contact-section" aria-labelledby="links-title">
+            <div>
+                <p class="page-kicker">02 / Elsewhere</p><h2 id="links-title">
+                    Find me online<span aria-hidden="true">↗</span>
+                </h2>
+            </div>
+            <div class="contact-links">
                 {
                     socialLinks.map(({ href, label }) => (
                         <a
+                            class="btn btn-outline"
                             href={href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="paper-button action-button"
                             aria-label={`${label} (opens in a new tab)`}
                         >
-                            {label}{" "}
-                            <span class="action-button__icon" aria-hidden="true">
-                                ↗
-                            </span>
+                            {label}
+                            <span aria-hidden="true">↗</span>
                         </a>
                     ))
                 }
@@ -81,141 +84,167 @@ import { site, socialLinks, toolboxGroups } from "../config/site";
         </section>
     </div>
 </BaseLayout>
-
 <style>
     .home-page {
-        margin: 0 auto;
-        max-width: var(--content-max);
-        padding: var(--page-top) 0 0;
+        padding-block: var(--page-top) var(--space-8);
     }
     .intro {
-        align-items: center;
         display: grid;
-        gap: clamp(1.5rem, 3vw, 3rem);
-        grid-template-columns: minmax(0, 1fr) clamp(20rem, 45vw, 32rem);
-        padding: var(--hero-padding-top) 0 3.5rem;
+        grid-template-columns: 1.1fr 1fr;
+        gap: var(--space-7);
+        align-items: stretch;
     }
     .intro-copy {
         min-width: 0;
+        padding-block: var(--space-3);
     }
-    .intro h1 {
-        font-size: var(--text-page-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: var(--leading-tight);
-        margin: 1.2rem 0 0.5rem;
-    }
-    .role {
-        color: var(--accent);
-        font-size: var(--text-lead);
-        font-weight: var(--weight-medium);
-        letter-spacing: -0.04em;
-        margin: 0 0 var(--space-6);
+    h1 {
+        margin-block: var(--space-4) var(--space-5);
     }
     .intro-description {
-        color: var(--fg2);
+        max-width: 38rem;
         line-height: var(--leading-body);
-        margin: 0 0 var(--space-5);
-        max-width: 42rem;
+        margin-bottom: var(--space-4);
     }
-    .coffee-art {
-        font-family: inherit;
-        font-size: clamp(0.22rem, 0.45vw, 0.3rem);
-        font-weight: 700;
-        justify-self: end;
-        letter-spacing: 0;
-        margin: 0;
-        transform: scale(1.8);
-        transform-origin: right center;
-        white-space: pre;
+    .intro-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-5);
+        margin-top: var(--space-5);
     }
-    .home-section {
-        border-top: var(--border-width) solid var(--line);
-        padding: var(--space-9) 0;
+    .location-note {
+        font-size: var(--text-small);
+        line-height: 1.7;
+    }
+    .cat-scene {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: var(--rule-width) solid var(--rule-color);
+    }
+    .cat-scene__label {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-small);
+        text-transform: uppercase;
+        border-bottom: var(--rule-width) solid var(--rule-color);
+        background: var(--color-primary);
+        color: var(--color-primary-content);
+    }
+    .cat-scene__art {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-6) var(--space-3);
+    }
+    .cat-scene__caption {
+        font-size: var(--text-small);
+        text-align: center;
+        padding: var(--space-3);
+        border-top: var(--rule-width) solid var(--rule-color);
+    }
+    .toolbox-section {
+        margin-top: var(--space-8);
     }
     .section-heading {
-        align-items: end;
-        display: flex;
-        justify-content: start;
-        margin-bottom: 1.8rem;
+        flex-direction: row-reverse;
     }
-    .section-heading h2 {
-        font-size: var(--text-section-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: 0.8;
-        margin: var(--space-1) 0 0;
+    .toolbox-table {
+        min-width: 0;
     }
-    .skill-row {
-        display: grid;
-        gap: var(--space-6);
-        grid-template-columns: 9rem minmax(0, 1fr);
-        padding: 1.05rem 0;
-        border-bottom: 1px solid var(--fg3);
-    }
-    .skill-row:last-child {
-        border-bottom: 0;
-    }
-    .skill-row > span {
-        color: var(--accent);
-        font-size: var(--text-small);
-        font-weight: var(--weight-medium);
-        letter-spacing: var(--tracking-label);
+    .table th {
+        width: 30%;
+        padding-left: 0;
+        vertical-align: top;
+        padding-block: var(--space-4);
         text-transform: uppercase;
+        font-size: var(--text-small);
+        font-weight: 500;
     }
-    .skill-row p {
-        color: var(--fg2);
-        line-height: 1.6;
-        margin: 0;
+    .table td {
+        padding-block: var(--space-4);
+        padding-right: 0;
     }
-    .contact-block {
-        background: var(--accent);
-        border: var(--border-width) solid var(--line);
-        border-bottom: 0;
-        margin: 0 auto;
-        max-width: 38rem;
-        padding: var(--space-7) var(--space-5);
-        text-align: center;
+    .table tr {
+        border-color: var(--rule-color);
     }
-    .contact-block h2 {
-        color: var(--bg);
-        font-size: clamp(1.8rem, 4vw, 2.6rem);
-        font-weight: var(--weight-bold);
-        letter-spacing: -0.08em;
-        line-height: 1;
-        margin: 0 0 1.4rem;
-    }
-    .contact-block .contact-row {
-        justify-content: center;
-    }
-    .contact-row {
+    .toolbox-tools {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.8rem;
+        gap: var(--space-1);
+    }
+    .badge {
+        font-size: var(--text-small);
+    }
+    .contact-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-6);
+        margin-top: var(--space-7);
+        padding: var(--space-6);
+        border: var(--rule-width) solid var(--rule-color);
+        background: var(--color-primary);
+        color: var(--color-primary-content);
+    }
+    .contact-section .page-kicker {
+        color: inherit;
+    }
+    .contact-section h2 {
+        font-size: var(--text-section-title);
+        line-height: 1.2;
+        letter-spacing: -0.06em;
+        margin-top: var(--space-3);
+        text-transform: uppercase;
+    }
+    .contact-section h2 span {
+        margin-left: var(--space-4);
+    }
+    .contact-links {
+        display: flex;
+        gap: var(--space-3);
+    }
+    .contact-links .btn {
+        background: var(--color-base-100);
+        color: var(--color-base-content);
+    }
+    .contact-links .btn:hover {
+        background: var(--color-base-200);
     }
     @media (max-width: 700px) {
         .intro {
-            display: block;
-            padding: var(--space-4) 0 var(--space-7);
-        }
-        .coffee-art {
-            font-size: 0.42rem;
-            margin: var(--space-7) auto 0;
-            transform: none;
-            width: max-content;
-        }
-        .home-page {
-            padding-top: var(--space-8);
-        }
-        .home-section {
-            padding: 2.2rem 0;
-        }
-        .section-heading {
-            display: block;
-        }
-        .skill-row {
-            gap: 0.45rem;
             grid-template-columns: 1fr;
+        }
+        .cat-scene {
+            min-height: 17rem;
+        }
+        .contact-section {
+            align-items: stretch;
+            flex-direction: column;
+            padding: var(--space-5);
+        }
+        .contact-links .btn {
+            flex: 1;
+        }
+        .table th {
+            width: 30%;
+        }
+        .section-heading .page-kicker {
+            max-width: 9rem;
+            text-align: right;
+        }
+    }
+    @media (max-width: 420px) {
+        .table th {
+            width: 7.25rem;
+            font-size: 0.65rem;
+        }
+        .intro-actions {
+            align-items: stretch;
+            flex-direction: column;
         }
     }
 </style>
