@@ -4,7 +4,7 @@ export const site = {
         "Personal website and blog of Yaroslav — Full-Stack Developer working with TypeScript, React, Next.js, Node.js, and Python.",
     handle: "yanklio",
     location: "Poznan, PL",
-    name: "Yaroslav",
+    name: "yankli0",
 } as const;
 
 export const navigationItems = [
