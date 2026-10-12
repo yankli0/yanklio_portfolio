@@ -38,7 +38,10 @@ Use imports first in Astro frontmatter, explicit types, destructured props, rela
 - Use daisyUI 5 components with Tailwind 4. Prefer `btn`, `navbar`, `menu`, `card`, `badge`, and `table` over custom imitations.
 - Garden is the light theme, with warm paper surfaces; Forest is dark. Both use orange as primary with a dark primary-content foreground. Keep theme corner radii at `0.125rem` (2px), including buttons, badges, and cards.
 - Use semantic daisyUI color roles and matching content colors. Keep raw theme overrides in global.css. Use shared rule and pressed-shadow tokens for the retro treatment rather than reintroducing a separate Gruvbox palette or paper-button system.
+- Prefer plain links for navigation and content destinations; reserve buttons with the shared offset-shadow pressed effect for actions. Avoid decorative slogans and redundant calls to action.
 - Keep a retro magazine feel: a compact masthead, joined navigation tabs, ruled sections, and restrained orange blocks; no Bento card grids. Navigation tabs are real page links with aria-current, not ARIA tab panels. Use scoped CSS for component-specific layout, not duplicated component styling.
+- Keep the sticky masthead in `BaseLayout.astro`. Use horizontal heading rules without a decorative vertical side line. Preserve anchor scroll clearance and narrow-screen gutters.
+- Use `PageHeader.astro` for page titles and `SectionHeader.astro` for section/subsection headings. Shared heading styles in global.css also cover Markdown headings; avoid page-specific heading typography.
 - Check existing tokens before adding repeated dimensions. Unique ASCII-art sizing may remain local.
 - Use `700px` for the primary mobile breakpoint and `420px` only where narrow-phone layout requires it. Avoid horizontal overflow; mobile controls should use available width.
 
@@ -48,7 +51,7 @@ Use imports first in Astro frontmatter, explicit types, destructured props, rela
 - Keep both disabled `???` Notes destinations until replacements are requested.
 - Keep optional post images and the fallback social image.
 - Keep the visible footer version as authored text.
-- The current article's disabled Open button represents the already-open page and retains its pressed appearance.
+- Article headers use the same flat presentation as Notes previews, without an Open button. Align article body text with the header.
 
 ## Content, metadata, and theme behavior
 
@@ -66,5 +69,5 @@ Apply stored/system theme before paint. Keep the inline initializer and theme sc
 - Inspect generated RSS, robots, and metadata when URL/metadata behavior changes.
 - Remove temporary screenshots, scripts, and logs from the repository.
 - Preserve unrelated dirty-worktree changes. Stage only the intended files.
-- Clarify ambiguous broad design work before editing. Use separate meaningful commits for independent changes.
+- Clarify ambiguous broad design work before editing. Keep visual revisions uncommitted until the user explicitly approves the design. Once approved, use separate meaningful commits for independent changes.
 - Use the user-requested branch name (`ui-refresh` for this migration); otherwise use a separate `codex/` branch.
