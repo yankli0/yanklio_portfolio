@@ -81,7 +81,7 @@ const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
             })();
         </script>
         <script>
-            import "../scripts/theme";
+            import "../scripts/ui";
         </script>
     </head>
     <body>
@@ -127,6 +127,7 @@ const ogImage = new URL(pageImage ?? site.defaultImage, siteUrl).href;
     main {
         position: relative;
         flex: 1;
+        min-height: 75dvh;
         min-width: 0;
         padding-inline: var(--page-gutter);
     }

@@ -6,12 +6,17 @@
     themes:
         garden --default,
         forest --prefersdark;
+    include:
+        rootcolor, svg, rootscrollgutter, properties, scrollbar, rootscrolllock, button, badge, navbar, link, footer,
+        card, list, tab, hero, indicator, toggle, label, table, join;
 }
 @plugin "daisyui/theme" {
     name: "garden";
     default: true;
     --color-primary: #d1865a;
     --color-primary-content: #2e2118;
+    --color-accent: #d9a05b;
+    --color-accent-content: #2e2118;
     --color-secondary: #8f5935;
     --color-secondary-content: #faf4e8;
     --color-base-100: #faf4e8;
@@ -29,6 +34,8 @@
     prefersdark: true;
     --color-primary: #cc7f4c;
     --color-primary-content: #2e2118;
+    --color-accent: #a8642f;
+    --color-accent-content: #f4e8d2;
     --color-secondary: #d1916a;
     --color-secondary-content: #2e2118;
     --color-base-100: #25211d;
