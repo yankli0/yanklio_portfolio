@@ -1,43 +1,38 @@
 ---
 import { site } from "../../config/site";
-
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-    <div class="footer-inner">
-        <span>© {currentYear} {site.handle.toUpperCase()}</span>
-        <span>Made with love and coffee | v0.8.18</span>
+<footer class="site-footer bg-base-200 layout-rule--top">
+    <div class="footer page-container footer-inner">
+        <span>© {currentYear} {site.name}</span>
+        <span>v0.8.18</span>
         <span>{site.location}</span>
     </div>
 </footer>
-
 <style>
     .site-footer {
-        border-top: var(--border-width) solid var(--line);
-        height: 100%;
+        padding: var(--space-6) var(--page-gutter);
     }
     .footer-inner {
-        align-items: center;
-        color: var(--fg3);
         display: flex;
-        font-size: var(--text-meta);
-        height: 100%;
+        align-items: center;
         justify-content: space-between;
-        margin: 0 auto;
-        padding: 0 var(--page-gutter);
-        text-transform: uppercase;
-    }
-    @media (min-width: 701px) {
-        .footer-inner {
-            padding-left: calc(var(--rail-width) + var(--page-gutter));
-        }
+        gap: var(--space-4);
+        font-size: var(--text-small);
     }
     @media (max-width: 700px) {
         .footer-inner {
-            flex-direction: column;
-            gap: var(--space-1);
-            padding: var(--space-3) var(--page-gutter);
+            display: grid;
+            grid-auto-flow: row;
+            grid-template-columns: auto auto;
+            justify-content: center;
+            gap: var(--space-2) var(--space-4);
+            text-align: center;
+        }
+        .footer-inner > span:first-child {
+            grid-column: 1 / -1;
+            justify-self: center;
         }
     }
 </style>

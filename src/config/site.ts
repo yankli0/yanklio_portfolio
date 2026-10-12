@@ -1,13 +1,14 @@
 export const site = {
     defaultImage: "/blog-images/00-personal-photo.jpeg",
-    description: "Personal website and blog of Yaroslav — Full-Stack Developer working with TypeScript, React, Next.js, Node.js, and Python.",
+    description:
+        "Personal website and blog of Yaroslav — Full-Stack Developer working with TypeScript, React, Next.js, Node.js, and Python.",
     handle: "yanklio",
     location: "Poznan, PL",
     name: "Yaroslav",
 } as const;
 
 export const navigationItems = [
-    { href: "/", label: "About" },
+    { href: "/", label: "Home" },
     { href: "/blog", label: "Notes" },
 ] as const;
 
@@ -16,7 +17,7 @@ export function isNavigationItemActive(pathname: string, href: string) {
 }
 
 export const socialLinks = [
-    { href: "https://github.com/yanklio", label: "GitHub" },
+    { href: "https://github.com/yankli0", label: "GitHub" },
     { href: "https://www.linkedin.com/in/yaroslav-u/", label: "LinkedIn" },
 ] as const;
 

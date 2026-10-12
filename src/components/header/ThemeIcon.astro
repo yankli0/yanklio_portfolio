@@ -3,39 +3,23 @@ import { Icon } from "astro-icon/components";
 ---
 
 <button
-    class="theme-toggle paper-button"
-    aria-label="Switch color theme"
+    class="btn btn-primary btn-square theme-toggle"
+    aria-label="Dark theme"
     aria-pressed="false"
     type="button"
     data-theme-toggle
 >
-    <Icon class="icon sun" name="ic:baseline-wb-sunny" aria-hidden="true" />
-    <Icon class="icon moon" name="ic:baseline-dark-mode" aria-hidden="true" />
+    <Icon class="sun" name="ic:baseline-wb-sunny" aria-hidden="true" />
+    <Icon class="moon" name="ic:baseline-dark-mode" aria-hidden="true" />
 </button>
-
 <style>
-    .theme-toggle {
-        background: var(--aqua);
-        color: var(--bg);
-        width: 2.55rem;
-        height: 2.55rem;
-        padding: 0;
-        font-size: 1.3rem;
-        cursor: pointer;
-    }
-
-    .theme-toggle:hover {
-        background: var(--aqua-dim);
-    }
-
     .moon {
         display: none;
     }
-
-    :global(.dark) .sun {
+    :global([data-theme="forest"]) .sun {
         display: none;
     }
-    :global(html.dark) .moon {
+    :global([data-theme="forest"]) .moon {
         display: block;
     }
 </style>

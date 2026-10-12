@@ -18,6 +18,6 @@ export const GET: APIRoute = async ({ site: siteUrl }) => {
             title: post.data.title,
         })),
         site: siteUrl,
-        title: `${site.handle} | Notes`,
+        title: `${site.name} | Notes`,
     });
 };

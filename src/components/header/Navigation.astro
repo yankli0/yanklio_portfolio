@@ -1,71 +1,114 @@
 ---
+import { Icon } from "astro-icon/components";
 import { isNavigationItemActive, navigationItems } from "../../config/site";
 
-interface Props {
-    variant?: "desktop" | "mobile";
-}
-
-const currentPath = Astro.url.pathname;
-const { variant = "desktop" } = Astro.props;
+const items = navigationItems.map(({ href, label }) => ({
+    href,
+    label,
+    isActive: isNavigationItemActive(Astro.url.pathname, href),
+}));
 ---
 
-<nav
-    class:list={["navigation", `navigation--${variant}`]}
-    aria-label={variant === "mobile" ? "Mobile navigation" : "Primary navigation"}
->
-    {
-        navigationItems.map(({ href, label }) => (
-            <a
-                href={href}
-                class:list={[
-                    "navigation__link",
-                    "paper-button",
-                    { "is-active": isNavigationItemActive(currentPath, href) },
-                ]}
-                aria-current={isNavigationItemActive(currentPath, href) ? "page" : undefined}
-            >
-                {label}
-            </a>
-        ))
-    }
-</nav>
-
+<div class="tabs-row">
+    <button class="btn btn-ghost btn-square tabs-arrow" type="button" data-tabs-prev aria-label="Previous section">
+        <Icon name="ic:baseline-chevron-left" aria-hidden="true" />
+    </button>
+    <nav class="tabs site-tabs" aria-label="Primary navigation">
+        {
+            items.map(({ href, label, isActive }) => (
+                <a
+                    href={href}
+                    class:list={["tab", { "tab-active": isActive }]}
+                    aria-current={isActive ? "page" : undefined}
+                >
+                    {label}
+                </a>
+            ))
+        }
+    </nav>
+    <button class="btn btn-ghost btn-square tabs-arrow" type="button" data-tabs-next aria-label="Next section">
+        <Icon name="ic:baseline-chevron-right" aria-hidden="true" />
+    </button>
+</div>
 <style>
-    .navigation {
+    .tabs-row {
+        align-items: stretch;
         display: flex;
-        gap: var(--space-1);
     }
-    .navigation__link {
-        background: var(--bg_hard);
-        font-size: var(--text-nav);
-        font-weight: var(--weight-bold);
-        letter-spacing: 0.05em;
-        padding: 0.55rem 0.85rem;
-        text-decoration: none;
+    .site-tabs {
+        flex-wrap: nowrap;
+        flex: 1 1 auto;
+    }
+    .tabs-arrow {
+        align-items: center;
+        border: 0;
+        display: inline-flex;
+        flex: 0 0 auto;
+        height: auto;
+        justify-content: center;
+        min-height: 0;
+        min-width: 0;
+        padding: 0;
+        width: 2.25rem;
+    }
+    .site-tabs > .tab {
+        min-height: 2.75rem;
+        min-width: 8rem;
+        border-right: var(--rule-width) solid var(--rule-color);
+        color: var(--color-base-content);
+        font-family: var(--font-mono);
+        font-size: var(--text-small);
         text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-radius: 0;
     }
-    .navigation__link:hover {
-        background: var(--bg2);
+    .site-tabs > .tab:first-child {
+        border-left: var(--rule-width) solid var(--rule-color);
     }
-    .navigation__link.is-active {
-        background: var(--nav-accent);
-        color: var(--black);
-        pointer-events: none;
+    .site-tabs > .tab-active {
+        box-shadow: inset 0 -3px 0 var(--color-primary);
+        font-weight: 700;
+        text-decoration: none;
     }
-    .navigation--mobile {
-        display: grid;
-        gap: 0.65rem;
+    .site-tabs > .tab-active:hover {
+        text-decoration: none;
     }
-    .navigation--mobile .navigation__link {
-        background: var(--bg_hard);
-        border-width: 3px;
-        font-size: 0.85rem;
-        justify-content: flex-start;
-        padding: 0.8rem 1rem;
-        text-align: left;
+    .site-tabs > .tab:hover {
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
     }
-    .navigation--mobile .navigation__link.is-active {
-        background: var(--nav-accent);
-        color: var(--black);
+    @media (max-width: 700px) {
+        .site-tabs > .tab {
+            min-width: 7rem;
+        }
     }
 </style>
+<script>
+    const tabsRow = document.querySelector<HTMLElement>(".tabs-row");
+    if (tabsRow) {
+        const tabs = [...tabsRow.querySelectorAll<HTMLAnchorElement>(".site-tabs > .tab")];
+        const prev = tabsRow.querySelector<HTMLButtonElement>("[data-tabs-prev]")!;
+        const next = tabsRow.querySelector<HTMLButtonElement>("[data-tabs-next]")!;
+
+        const activeIndex = () => tabs.findIndex((tab) => tab.getAttribute("aria-current") === "page");
+        const startIndex = () => {
+            const index = activeIndex();
+            return index === -1 ? 0 : index;
+        };
+
+        const step = (direction: number) => {
+            const target = tabs[startIndex() + direction];
+            if (target) target.click();
+        };
+
+        const syncArrows = () => {
+            const position = startIndex();
+            prev.disabled = position <= 0;
+            next.disabled = position >= tabs.length - 1;
+        };
+        syncArrows();
+
+        prev.addEventListener("click", () => step(-1));
+        next.addEventListener("click", () => step(1));
+    }
+</script>

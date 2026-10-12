@@ -1,137 +1,185 @@
 ---
+import { Icon } from "astro-icon/components";
 import Logo from "../Logo.astro";
 import Navigation from "./Navigation.astro";
 import ThemeIcon from "./ThemeIcon.astro";
-import { Icon } from "astro-icon/components";
 ---
 
-<header class="site-header">
-    <div class="header-inner">
-        <Logo />
-        <div class="desktop-only header-desktop">
-            <Navigation />
-            <div class="header-actions"><ThemeIcon /></div>
+<header class="site-header bg-base-100 layout-rule--bottom">
+    <div class="masthead-strip bg-base-content text-base-100">
+        <span class="sr-only">Make it make sense</span>
+        <div class="masthead-ticker" aria-hidden="true">
+            <div class="masthead-ticker__group">
+                <span class="masthead-ticker__unit">
+                    <span>Make it make sense</span>
+                    <span class="text-primary">✦</span>
+                    <span data-ticker-phrase>Brewing</span>
+                    <span class="text-primary">✦</span>
+                </span>
+            </div>
         </div>
         <button
-            id="mobileMenuToggle"
-            class="mobile-menu-btn mobile-only paper-button"
-            aria-expanded="false"
-            aria-controls="mobileMenu"
-            aria-label="Open navigation"
+            class="btn btn-ghost ticker-pause"
+            type="button"
+            aria-label="Pause scrolling banner"
+            hidden
+            data-ticker-pause
         >
-            <span class="menu-open-icon" aria-hidden="true"><Icon name="ic:menu" /></span>
-            <span class="menu-close-icon" aria-hidden="true"><Icon name="ic:close" /></span>
+            <Icon class="pause-icon" name="ic:baseline-pause" aria-hidden="true" />
+            <Icon class="play-icon" name="ic:baseline-play-arrow" aria-hidden="true" />
         </button>
     </div>
-    <div id="mobileMenu" class="mobile-menu mobile-only" hidden>
-        <Navigation variant="mobile" />
-        <button
-            class="mobile-theme-toggle paper-button action-button"
-            type="button"
-            data-theme-toggle
-            aria-label="Switch color theme"
-            aria-pressed="false">Theme</button
-        >
+    <div class="navbar page-container masthead">
+        <Logo />
+        <div class="masthead-details"><p>Full-stack developer<br /><span>Poznań, PL</span></p><ThemeIcon /></div>
     </div>
+    <div class="navigation-row bg-base-200 layout-rule--top"><div class="page-container"><Navigation /></div></div>
 </header>
+<script>
+    const phrases = [
+        "Baking",
+        "Beaming",
+        "Beboppin'",
+        "Befuddling",
+        "Billowing",
+        "Blanching",
+        "Bloviating",
+        "Boogieing",
+        "Boondoggling",
+        "Brewing",
+        "Architecting",
+        "Actualizing",
+    ];
+    document.querySelectorAll<HTMLElement>(".masthead-ticker").forEach((ticker) => {
+        const pause = ticker.parentElement!.querySelector<HTMLButtonElement>("[data-ticker-pause]")!;
+        pause.hidden = false;
+        pause.setAttribute("aria-label", "Pause scrolling banner");
+        pause.addEventListener("click", () => {
+            const paused = ticker.dataset.paused !== "true";
+            ticker.dataset.paused = String(paused);
+            pause.dataset.paused = String(paused);
+            pause.setAttribute("aria-label", paused ? "Resume scrolling banner" : "Pause scrolling banner");
+        });
+        const group = ticker.querySelector<HTMLElement>(".masthead-ticker__group")!;
+        const unit = group.querySelector<HTMLElement>(".masthead-ticker__unit")!;
+        unit.querySelector("[data-ticker-phrase]")!.textContent = phrases[Math.floor(Math.random() * phrases.length)];
 
+        const fitTicker = () => {
+            ticker.querySelectorAll(".masthead-ticker__group").forEach((copy) => {
+                if (copy !== group) copy.remove();
+            });
+            group.replaceChildren(unit);
+            const unitWidth = unit.getBoundingClientRect().width;
+            if (!unitWidth) return;
+            const count = Math.ceil(ticker.parentElement!.clientWidth / unitWidth);
+            for (let index = 1; index < count; index++) {
+                group.append(unit.cloneNode(true));
+            }
+            const distance = group.getBoundingClientRect().width;
+            ticker.append(group.cloneNode(true));
+            ticker.style.setProperty("--ticker-distance", `${distance}px`);
+            ticker.style.setProperty("--ticker-duration", `${distance / 42}s`);
+            ticker.dataset.ready = "true";
+        };
+
+        void document.fonts.ready.then(() => {
+            fitTicker();
+            new ResizeObserver(fitTicker).observe(ticker.parentElement!);
+        });
+    });
+</script>
 <style>
-    .site-header {
-        background: var(--bg);
-        border-bottom: var(--border-width) solid var(--line);
-        min-height: var(--header-height);
+    .masthead-strip {
+        position: relative;
+        padding-block: var(--space-1);
+        overflow: hidden;
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        line-height: 1.5;
     }
-    .header-inner {
-        align-items: center;
+    .masthead-ticker {
         display: flex;
+        width: max-content;
+    }
+    .masthead-ticker[data-ready] {
+        animation: ticker-scroll var(--ticker-duration) linear infinite;
+    }
+    .masthead-ticker[data-paused="true"] {
+        animation-play-state: paused;
+    }
+    .ticker-pause {
+        position: absolute;
+        inset: 0 0 0 auto;
+        height: 100%;
+        min-height: 0;
+        border: 0;
+        border-left: var(--rule-width) solid currentColor;
+        border-radius: 0;
+        background: var(--color-base-content);
+        color: var(--color-base-100);
+        padding-inline: var(--space-2);
+    }
+    .ticker-pause:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: -4px;
+    }
+    .ticker-pause :global(.play-icon),
+    .ticker-pause[data-paused="true"] :global(.pause-icon) {
+        display: none;
+    }
+    .ticker-pause[data-paused="true"] :global(.play-icon) {
+        display: block;
+    }
+    .ticker-pause[hidden] {
+        display: none;
+    }
+    .masthead-ticker__group {
+        display: flex;
+        flex-shrink: 0;
+    }
+    .masthead-ticker__unit {
+        display: flex;
+        align-items: center;
+        flex: none;
+        gap: var(--space-7);
+        white-space: nowrap;
+        padding-right: var(--space-7);
+    }
+    @keyframes ticker-scroll {
+        to {
+            transform: translateX(calc(-1 * var(--ticker-distance)));
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .ticker-pause {
+            display: none;
+        }
+        .masthead-ticker[data-ready] {
+            animation: none;
+        }
+    }
+    .masthead {
         justify-content: space-between;
-        margin: 0 auto;
-        height: calc(var(--header-height) - var(--border-width));
-        padding: 0 var(--page-gutter);
+        min-height: var(--header-height);
+        padding: var(--space-3) 0;
+        width: calc(100% - var(--page-gutter) * 2);
     }
-    .header-desktop {
-        align-items: center;
+    .masthead-details {
         display: flex;
+        align-items: center;
         gap: var(--space-5);
     }
-    .header-actions {
-        align-items: center;
-        display: flex;
-        gap: 0.6rem;
+    .masthead-details p {
+        font-size: var(--text-small);
+        line-height: 1.6;
+        text-align: right;
     }
-    .mobile-menu-btn {
-        height: var(--control-height);
-        padding: 0;
-        width: var(--control-height);
-    }
-    .mobile-menu-btn :global(svg) {
-        height: 1.45rem;
-        width: 1.45rem;
-    }
-    .menu-close-icon {
-        display: none;
-    }
-    .mobile-menu-btn[aria-expanded="true"] .menu-open-icon {
-        display: none;
-    }
-    .mobile-menu-btn[aria-expanded="true"] .menu-close-icon {
-        display: flex;
-    }
-    .mobile-menu {
-        display: none;
-        gap: 0.65rem;
-        margin: 0 auto;
-        padding: var(--space-3) var(--page-gutter);
-    }
-    .mobile-menu.open {
-        display: grid;
-    }
-    .mobile-theme-toggle {
-        background: var(--aqua);
-        color: var(--bg);
-        font-size: 0.85rem;
-        justify-content: flex-start;
-        text-align: left;
-    }
-    .mobile-theme-toggle:hover {
-        background: var(--aqua-dim);
+    .navigation-row {
+        padding-inline: var(--space-2);
     }
     @media (max-width: 700px) {
-        .header-desktop {
+        .masthead-details p {
             display: none;
         }
     }
 </style>
-
-<script>
-    function setupMobileMenu() {
-        const toggle = document.getElementById("mobileMenuToggle");
-        const menu = document.getElementById("mobileMenu");
-
-        if (!toggle || !menu || toggle.dataset.initialized) return;
-        toggle.dataset.initialized = "true";
-
-        const close = () => {
-            menu.classList.remove("open");
-            menu.hidden = true;
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.setAttribute("aria-label", "Open navigation");
-        };
-
-        toggle.addEventListener("click", () => {
-            const open = menu.classList.toggle("open");
-            menu.hidden = !open;
-            toggle.setAttribute("aria-expanded", String(open));
-            toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-        });
-        menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
-        menu.querySelector("[data-theme-toggle]")?.addEventListener("click", close);
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
-                close();
-                toggle.focus();
-            }
-        });
-    }
-    setupMobileMenu();
-</script>

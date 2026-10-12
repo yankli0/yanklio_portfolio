@@ -1,171 +1,73 @@
 # AGENTS.md
 
-Conventions for agentic coding assistants working in this Astro portfolio project.
+Guidance for any coding assistant working on this Astro portfolio.
 
-## Commands
+## Project commands
 
-### Development and validation
+Use mise for every project command. `mise.toml` pins Node; npm ships with that runtime. Bootstrap with `mise trust`, `mise install`, and `mise run setup`.
 
-- `npm run dev` — start the development server at `http://localhost:4321`.
-- `npm run build` — create the production build in `dist/`.
-- `npm run preview` — preview the production build locally.
-- `npx astro check` — validate Astro components and TypeScript.
-- `git diff --check` — detect whitespace errors before handoff.
+- `mise run dev`: development at http://localhost:4321.
+- `mise run build`: production build in `dist/`.
+- `mise run preview`: preview the production build.
+- `mise run check`: Astro and strict TypeScript checks.
+- `mise run format` / `mise run format:check`: Astro and CSS formatting.
+- `mise run validate`: formatting, build, types, and `git diff --check`.
+- Package maintenance: `mise exec -- npm install <package>`.
 
-### Formatting
+Keep npm scripts as the task implementation; do not bypass mise when running the project. Do not format Markdown content or unrelated files.
 
-- `npm run format` — format Astro components and CSS.
-- `npm run format:check` — verify formatting without changing files.
-- Prettier is configured in `.prettierrc.json` with `prettier-plugin-astro`.
-- Do not run Prettier over Markdown content or unrelated project files unless requested.
+## Project skill
 
-## Project Structure
+Read [skills/daisyui/SKILL.md](skills/daisyui/SKILL.md) before daisyUI UI work. This shared, agent-neutral skill and its references are usable by any assistant; no Codex-only installation or personal configuration is needed. Assistants without automatic skill discovery should follow this link directly.
 
-```text
-src/
-├── blog/                 # Markdown blog posts
-├── components/           # Reusable Astro components
-│   ├── footer/           # Site footer
-│   └── header/           # Navigation, theme, and RSS controls
-├── config/site.ts        # Site copy, navigation, social links, and fallback image
-├── content.config.ts     # Blog content schema
-├── data/blog.ts          # Typed blog collection access
-├── layouts/              # Base and Markdown post layouts
-├── pages/                # About, Notes, articles, RSS, robots, and 404 routes
-├── scripts/theme.ts      # Theme-control behavior
-└── styles/
-    ├── fonts.css         # Local font declarations
-    ├── global.css        # Global primitives and reusable utilities
-    ├── gruvbox.css       # Gruvbox color palette and theme switching
-    └── tokens.css        # Layout, spacing, typography, and control tokens
-```
+## Structure and conventions
 
-## Astro and TypeScript
+- `src/pages/`: About, Notes, articles, RSS, robots, and 404.
+- `src/components/`: reusable Astro components; header and footer have their own folders.
+- `src/layouts/`: base metadata/shell and Markdown article layout.
+- `src/config/site.ts`: shared copy, navigation, social links, and fallback image.
+- `src/blog/`, `src/content.config.ts`, `src/data/blog.ts`: Markdown, schema, typed date-sorted access.
+- `src/styles/global.css`: Tailwind/daisyUI configuration, Garden and Forest themes, global behavior.
+- `src/styles/tokens.css`: shared layout, spacing, and typography decisions.
+- `src/scripts/theme.ts`: interactive theme behavior.
 
-### Frontmatter and imports
+Use imports first in Astro frontmatter, explicit types, destructured props, relative local imports, and four-space template indentation. Let Prettier wrap Astro and CSS. Preserve semantic headings, accessible control names, and `aria-current="page"`; decorative icons use `aria-hidden="true"`.
 
-- Use `---` fences for Astro frontmatter.
-- Put imports first, followed by types, component logic, and derived values.
-- Destructure component props: `const { pageTitle } = Astro.props`.
-- Use relative imports for local files.
-- Prefer explicit types and collection entry types over `any`.
-- The project extends Astro's strict TypeScript configuration.
+## Design system
 
-### Templates
+- Use daisyUI 5 components with Tailwind 4. Prefer `btn`, `navbar`, `menu`, `card`, `badge`, and `table` over custom imitations.
+- Garden is the light theme, with warm paper surfaces; Forest is dark. Both use orange as primary with a dark primary-content foreground. Keep theme corner radii at `0.125rem` (2px), including buttons, badges, and cards.
+- Use semantic daisyUI color roles and matching content colors. Keep raw theme overrides in global.css. Use shared rule and pressed-shadow tokens for the retro treatment rather than reintroducing a separate Gruvbox palette or paper-button system.
+- Prefer plain links for navigation and content destinations; reserve buttons with the shared offset-shadow pressed effect for actions. Avoid decorative slogans and redundant calls to action.
+- Keep a retro magazine feel: a compact masthead, joined navigation tabs, ruled sections, and restrained orange blocks; no Bento card grids. Navigation tabs are real page links with aria-current, not ARIA tab panels. Use scoped CSS for component-specific layout, not duplicated component styling.
+- Keep the sticky masthead in `BaseLayout.astro`. Use horizontal heading rules without a decorative vertical side line. Preserve anchor scroll clearance and narrow-screen gutters.
+- Use `PageHeader.astro` for page titles and `SectionHeader.astro` for section/subsection headings. Shared heading styles in global.css also cover Markdown headings; avoid page-specific heading typography.
+- Check existing tokens before adding repeated dimensions. Unique ASCII-art sizing may remain local.
+- Use `700px` for the primary mobile breakpoint and `420px` only where narrow-phone layout requires it. Avoid horizontal overflow; mobile controls should use available width.
 
-- Use four-space indentation; let Prettier handle wrapping.
-- Put attributes on separate lines when an element becomes difficult to scan.
-- Use self-closing syntax for components and void elements where appropriate.
-- Use `<slot />` for layout content.
-- Preserve semantic heading order and accessible names.
-- Mark decorative symbols and icons with `aria-hidden="true"`.
-- Use `aria-current="page"` for current navigation destinations.
+## Preserved product decisions
 
-## Design System
+- Keep the ASCII cat and existing site content.
+- Keep both disabled `???` Notes destinations until replacements are requested.
+- Keep optional post images and the fallback social image.
+- Keep the visible footer version as authored text.
+- Article headers use the same flat presentation as Notes previews, without an Open button. Align article body text with the header.
 
-### Gruvbox Paper aesthetic
+## Content, metadata, and theme behavior
 
-- Preserve the retro Gruvbox paper appearance: flat backgrounds, strong outlines, offset shadows, condensed uppercase labels, and orange accents.
-- Do not introduce Bento-style card grids.
-- Prefer existing Gruvbox roles such as `var(--bg)`, `var(--fg1)`, `var(--accent)`, and `var(--surface)` instead of raw colors.
-- Keep layouts direct and editorial. Decorative boxes should have a clear purpose.
+Published posts match `src/blog/**/[^_]*.md`. Schema fields are `title`, `pubDate`, `description`, `author`, optional `image`, and `tags`. Use `getBlogPosts()` for typed, date-sorted entries; dynamic paths use `post.id`; render via `await render(post)`.
 
-### Token ownership
+Use `isNavigationItemActive()` rather than duplicating pathname logic. `astro.config.mjs` owns the canonical site URL; derive URLs from `Astro.site` or route context `site`. `BaseLayout.astro` owns canonical, Open Graph, Twitter, and JSON-LD metadata. Article layouts pass `pageType="article"` and optional images. Do not advertise nonfunctional search structured data.
 
-- `src/styles/gruvbox.css` owns raw theme colors and light/dark switching.
-- `src/styles/tokens.css` owns semantic layout, spacing, typography, border, shadow, and control values.
-- `src/styles/global.css` owns reusable primitives and global element behavior.
-- Component styles should primarily describe component-specific layout.
-- Before adding a hardcoded font size, padding, gap, border, shadow, or width, check for an existing semantic token.
-- Add a token when a value is reused or expresses a site-wide design decision.
-- Keep intentionally unique values local, such as ASCII-art scaling or the large date numeral.
+Apply stored/system theme before paint. Keep the inline initializer and theme script consistent, including migration of legacy `light`/`dark` preferences. Theme controls must report the current state accessibly.
 
-### Shared primitives
+## Verification and workflow
 
-- `.paper-button` provides the standard background, `2px` border, `4px` offset shadow, and pressed interaction.
-- `.compact-button` provides compact uppercase controls such as RSS and source buttons.
-- `.action-button` provides shared typography, spacing, and padding for prominent text actions.
-- `.action-button__icon` styles the arrow or external-link symbol inside an action.
-- `.page-container` provides the shared centered content width.
-- `.page-top` provides standard page-top spacing.
-- `.page-kicker` provides small uppercase contextual labels.
-- Extend these primitives with component classes instead of reimplementing their borders, shadows, typography, or pressed states.
-
-### Responsive tiers
-
-- Use `700px` as the primary desktop/mobile breakpoint.
-- Use `420px` only for narrow-phone adjustments that cannot be handled at `700px`.
-- Do not introduce nearby one-off breakpoints such as `600px`, `760px`, or `768px` without a documented layout need.
-- Mobile controls and source buttons should use the available width without causing horizontal overflow.
-
-### Scoped CSS
-
-- Keep component-specific styles in scoped `<style>` blocks.
-- Use kebab-case class names and BEM-like element names where helpful.
-- Keep one declaration per line and rely on Prettier for consistent formatting.
-- Avoid repeating global typography, button, border, and shadow declarations locally.
-
-## Content and Routes
-
-### Blog collection
-
-- Blog posts live in `src/blog/*.md`.
-- Published files must not begin with an underscore (`**/[^_]*.md`).
-- Frontmatter is validated in `src/content.config.ts`.
-- Current fields are `title`, `pubDate`, `description`, `author`, optional `image`, and `tags`.
-- Keep image support even when a post currently relies on the fallback social image.
-- Use `getBlogPosts()` from `src/data/blog.ts` for consistently typed, date-sorted posts.
-- Render Markdown with `const { Content } = await render(post)`.
-
-### Dynamic article routes
-
-```ts
-export async function getStaticPaths() {
-    const posts = await getBlogPosts();
-
-    return posts.map((post) => ({
-        params: { slug: post.id },
-        props: { post },
-    }));
-}
-```
-
-### Current navigation state
-
-- Use `isNavigationItemActive()` from `src/config/site.ts` instead of duplicating pathname logic.
-
-## Metadata and Theme
-
-- `astro.config.mjs` is the single source of truth for the canonical site URL.
-- Use `Astro.site` or the route context's `site` value for canonical URLs, RSS, robots, sitemap references, and structured data.
-- Do not duplicate the deployment URL in `src/config/site.ts` or static text files.
-- `BaseLayout.astro` owns canonical, Open Graph, Twitter, and JSON-LD metadata.
-- Article layouts must pass `pageType="article"` and forward an optional post image.
-- Pages without an image use `site.defaultImage`.
-- Do not advertise search structured data unless working search behavior exists.
-- Apply the stored/system theme in the inline head script before rendering to prevent theme flash.
-- Keep interactive theme-control logic in `src/scripts/theme.ts`.
-
-## Preserved Product Decisions
-
-- Keep the two disabled `???` source buttons on the Notes page until the user requests replacements.
-- Keep optional blog image support and the fallback social image.
-- Keep the footer version as visible text; do not derive or remove it unless requested.
-- The current article's disabled “Open” control represents the already-open page and should retain its pressed state.
-
-## Verification
-
-- Run `npm run format:check`, `npm run build`, `npx astro check`, and `git diff --check` before handoff.
-- Visually verify frontend changes in a browser at desktop and mobile widths.
-- Check About, Notes, an article, and 404 when shared layout or design primitives change.
-- Confirm there is no horizontal overflow at mobile widths.
-- Verify current navigation states, pressed/disabled controls, theme controls, and footer spacing when relevant.
-- Inspect generated `dist/robots.txt`, `dist/rss.xml`, and page metadata when URL or metadata behavior changes.
-- Remove temporary screenshots, scripts, logs, and preview artifacts from the repository before handoff.
-
-## Working Process
-
-- Preserve unrelated user changes in a dirty worktree.
-- Ask clarifying questions before changes when design intent or scope is ambiguous.
-- The user expects deep planning for broad or visual work; continue clarification until the intended outcome is unambiguous.
-- Keep changes on a separate `codex/` branch unless the user explicitly requests another workflow.
+- Run `mise run validate` before handoff.
+- Visually check About, Notes, an article, and 404 at desktop and mobile widths when shared UI changes.
+- Check horizontal overflow, keyboard focus, navigation state, mobile navigation tabs, disabled controls, both themes, persistence, and footer spacing.
+- Inspect generated RSS, robots, and metadata when URL/metadata behavior changes.
+- Remove temporary screenshots, scripts, and logs from the repository.
+- Preserve unrelated dirty-worktree changes. Stage only the intended files.
+- Clarify ambiguous broad design work before editing. Keep visual revisions uncommitted until the user explicitly approves the design. Once approved, use separate meaningful commits for independent changes.
+- Use the user-requested branch name (`ui-refresh` for this migration); otherwise use a separate `codex/` branch.

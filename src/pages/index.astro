@@ -1,221 +1,147 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { site, socialLinks, toolboxGroups } from "../config/site";
+import CatArt from "../components/CatArt.astro";
+import PageHeader from "../components/PageHeader.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { socialLinks, toolboxGroups } from "../config/site";
 ---
 
 <BaseLayout
     pageDescription="Personal website and notes by Yaroslav, a full-stack developer working with TypeScript, React, Node.js, and Python."
 >
-    <div class="home-page">
+    <div class="page-container page-top home-page">
+        <PageHeader id="intro-title" title="Home" />
         <section class="intro" aria-labelledby="intro-title">
             <div class="intro-copy">
-                <h1 id="intro-title">{site.name}</h1>
-                <p class="role">Full-stack developer</p>
-                <p class="intro-description">
-                    I’m drawn to interesting technical products and the systems behind them. Most of my experience is in
-                    the JavaScript ecosystem, working across both frontend and backend. I’m also moving deeper into Java
-                    world and mastering cloud infrastructure and DevOps<br /><br />Based in Poznań, PL and open to
-                    remote work too
+                <p>Hi, I’m Yaroslav, a full-stack developer based in Poznań, Poland.</p>
+                <p>
+                    I like interesting technical products and the systems behind them. Most of my experience is in the
+                    JavaScript ecosystem, working across frontend and backend. I’m open to remote work.
                 </p>
+                <section class="contact" aria-labelledby="contact-title">
+                    <SectionHeader id="contact-title" title="Get in touch" compact />
+                    <ul class="social-links" aria-label="Social profiles">
+                        {
+                            socialLinks.map(({ href, label }) => (
+                                <li>
+                                    <a
+                                        class="link"
+                                        href={href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={`${label} (opens in a new tab)`}
+                                    >
+                                        {label}
+                                    </a>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </section>
             </div>
-            <pre
-                class="ascii-art coffee-art"
-                aria-hidden="true">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣏⢻⣧⡀⠀⠀⠀⠀⠀⣠⣾⣿⠟⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⠾⢻⣻
-⠀⣴⡾⠿⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⢯⣿⣳⢦⡙⢿⣄⣀⣀⣠⣾⣫⣿⢿⡑⢺⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣶⠿⢟⣫⣭⣶⣿⣿⡿
-⣸⡟⠀⠀⣸⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⣤⣄⣀⣀⣼⠏⣼⣷⣭⡷⠟⠛⠉⡉⠉⢉⢭⠉⠛⠿⣿⣤⣿⣇⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⠾⢟⣫⣥⣶⣿⣿⣟⣷⣻⣿⠟⠀
-⣿⠀⠀⢰⣿⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠿⠛⠋⠉⠉⠉⠉⢻⡟⠀⣿⠟⠉⠤⠀⠀⢀⠀⠠⡇⠈⢣⠀⠉⠒⠙⢿⣿⡀⠀⠀⣀⣤⣶⠾⢟⣫⣽⣾⠿⣟⣯⣿⢿⡽⣾⡽⣾⣿⠏⠀⠀
-⣿⠀⠀⣸⣷⠀⠀⠀⠀⠀⠀⠀⣰⡿⢋⡤⠒⠁⠀⡀⠄⠀⢀⣿⢃⡶⠀⠀⠀⠀⠐⠈⠀⠀⠀⡇⠀⠘⡆⠀⠀⠀⠈⢻⣧⢀⣾⣿⣭⣷⠿⣟⣿⣽⡾⣿⣻⣟⡾⣯⣟⣷⣿⡿⠃⠀⠀⠀
-⢻⣧⠀⣇⠹⢷⣦⣀⡀⠀⠀⣼⢟⡴⠋⠀⠀⠠⠀⠄⠂⠀⢾⡿⢸⠇⠀⠈⠀⠀⠈⠀⠀⠁⠀⢷⠀⠀⣿⢀⠀⠀⡀⠀⢿⣿⣿⣿⣫⣾⡿⣟⡿⣾⣽⣳⣟⡾⣽⣳⣿⣿⡟⠀⠀⠀⠀⠀
-⠁⠻⣷⣝⣦⣤⣬⡽⡿⣿⣿⡏⠌⠀⠀⠄⠁⠀⠁⠀⠄⠈⣾⡇⠈⠀⠀⠀⠀⢹⣷⣤⣆⣼⣧⡼⠀⠀⠸⣿⣷⣷⣾⢿⣿⣿⣿⣧⣿⢯⡿⣽⣻⡿⠋⣿⣯⣟⣷⣿⣿⠏⠀⠀⠀⠀⠀⠀
-⠀⠀⠈⢙⣿⣷⣮⣷⣹⡶⣿⡈⠀⠀⠄⠀⠀⠀⠁⡐⠀⠠⢿⡇⠤⠚⠋⠉⠙⠒⠮⠭⠭⠭⠟⠃⠰⣷⡶⢈⠙⠒⢀⣾⣿⣿⣫⣿⡽⣯⣟⡷⣿⣤⣼⣿⣳⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀
-⠀⢠⣾⢟⢛⣿⠛⠛⠛⠿⣿⢰⡄⠀⢂⠈⡀⠀⠂⠀⠄⠀⢟⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠶⠿⠷⠾⠃⢀⣾⣿⣿⣳⣿⢯⣟⡷⣯⣟⣿⣻⣿⢿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢸⣷⣳⡜⢟⣁⡀⠀⠀⠻⠇⠙⢤⣀⡀⠀⠀⠀⢀⣾⡄⠀⠈⣿⣶⣄⣀⣀⣤⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣳⡿⣯⣟⣾⣽⣷⣿⣻⢯⣟⣿⣾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠸⣙⠛⠻⠿⢶⣯⣬⣐⣒⠠⠄⣀⡈⠉⠛⠋⢉⣿⠏⠁⠀⠘⣿⠟⠛⠉⠉⠉⠉⠙⣻⢷⣶⣶⣶⣶⣿⣿⣿⣿⣿⡿⣽⣻⣷⢿⣻⣽⣾⣷⣿⣿⣿⣿⠗⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠉⠀⠐⠠⠤⠉⢉⠛⠻⠿⢶⣶⣭⣥⣀⡘⣿⡈⠒⠒⠚⠁⠀⠀⠀⠀⠀⠐⣷⡝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⡽⣯⣿⣿⣾⣿⣿⠿⠛⠩⠐⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠂⠤⠌⣉⠙⠛⢿⣿⣶⣶⣶⣶⣾⣿⣿⣿⣷⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣳⣿⣿⣿⣿⣿⠿⠛⠉⠄⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠪⡻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠟⠻⠿⢿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠛⢻⣿⠿⠿⠛⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</pre>
+            <div class="cat-scene"><CatArt /></div>
         </section>
-
-        <section class="home-section" aria-labelledby="toolbox-title">
-            <header class="section-heading">
-                <h2 id="toolbox-title">Toolbox</h2>
-            </header>
-            <div class="skills-table">
-                {
-                    toolboxGroups.map(({ label, tools }) => (
-                        <div class="skill-row">
-                            <>
-                                <span>{label}</span>
-                                <p>{tools}</p>
-                            </>
-                        </div>
-                    ))
-                }
-            </div>
-        </section>
-
-        <section class="contact-block" aria-labelledby="links-title">
-            <h2 id="links-title">Find me online</h2>
-            <div class="contact-row">
-                {
-                    socialLinks.map(({ href, label }) => (
-                        <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="paper-button action-button"
-                            aria-label={`${label} (opens in a new tab)`}
-                        >
-                            {label}{" "}
-                            <span class="action-button__icon" aria-hidden="true">
-                                ↗
-                            </span>
-                        </a>
-                    ))
-                }
-            </div>
+        <section class="toolbox-section" aria-labelledby="toolbox-title">
+            <SectionHeader id="toolbox-title" title="Toolbox" />
+            <table class="table toolbox-table">
+                <caption class="sr-only">Technologies and tools I work with</caption>
+                <colgroup><col class="toolbox-category" /><col /></colgroup>
+                <tbody
+                    >{
+                        toolboxGroups.map(({ label, tools }) => (
+                            <tr>
+                                <>
+                                    <th scope="row">{label}</th>
+                                    <td>{tools}</td>
+                                </>
+                            </tr>
+                        ))
+                    }</tbody
+                >
+            </table>
         </section>
     </div>
 </BaseLayout>
-
 <style>
-    .home-page {
-        margin: 0 auto;
-        max-width: var(--content-max);
-        padding: var(--page-top) 0 0;
-    }
     .intro {
-        align-items: center;
+        margin-top: var(--space-6);
         display: grid;
-        gap: clamp(1.5rem, 3vw, 3rem);
-        grid-template-columns: minmax(0, 1fr) clamp(20rem, 45vw, 32rem);
-        padding: var(--hero-padding-top) 0 3.5rem;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        gap: var(--space-7);
+        align-items: center;
     }
     .intro-copy {
         min-width: 0;
     }
-    .intro h1 {
-        font-size: var(--text-page-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: var(--leading-tight);
-        margin: 1.2rem 0 0.5rem;
-    }
-    .role {
-        color: var(--accent);
-        font-size: var(--text-lead);
-        font-weight: var(--weight-medium);
-        letter-spacing: -0.04em;
-        margin: 0 0 var(--space-6);
-    }
-    .intro-description {
-        color: var(--fg2);
+    .intro-copy p {
         line-height: var(--leading-body);
-        margin: 0 0 var(--space-5);
-        max-width: 42rem;
-    }
-    .coffee-art {
-        font-family: inherit;
-        font-size: clamp(0.22rem, 0.45vw, 0.3rem);
-        font-weight: 700;
-        justify-self: end;
-        letter-spacing: 0;
-        margin: 0;
-        transform: scale(1.8);
-        transform-origin: right center;
-        white-space: pre;
-    }
-    .home-section {
-        border-top: var(--border-width) solid var(--line);
-        padding: var(--space-9) 0;
-    }
-    .section-heading {
-        align-items: end;
-        display: flex;
-        justify-content: start;
-        margin-bottom: 1.8rem;
-    }
-    .section-heading h2 {
-        font-size: var(--text-section-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: 0.8;
-        margin: var(--space-1) 0 0;
-    }
-    .skill-row {
-        display: grid;
-        gap: var(--space-6);
-        grid-template-columns: 9rem minmax(0, 1fr);
-        padding: 1.05rem 0;
-        border-bottom: 1px solid var(--fg3);
-    }
-    .skill-row:last-child {
-        border-bottom: 0;
-    }
-    .skill-row > span {
-        color: var(--accent);
-        font-size: var(--text-small);
-        font-weight: var(--weight-medium);
-        letter-spacing: var(--tracking-label);
-        text-transform: uppercase;
-    }
-    .skill-row p {
-        color: var(--fg2);
-        line-height: 1.6;
-        margin: 0;
-    }
-    .contact-block {
-        background: var(--accent);
-        border: var(--border-width) solid var(--line);
-        border-bottom: 0;
-        margin: 0 auto;
+        margin-top: var(--space-5);
         max-width: 38rem;
-        padding: var(--space-7) var(--space-5);
-        text-align: center;
     }
-    .contact-block h2 {
-        color: var(--bg);
-        font-size: clamp(1.8rem, 4vw, 2.6rem);
-        font-weight: var(--weight-bold);
-        letter-spacing: -0.08em;
-        line-height: 1;
-        margin: 0 0 1.4rem;
+    .intro-copy > p:first-child {
+        margin-top: 0;
     }
-    .contact-block .contact-row {
-        justify-content: center;
+    .contact {
+        margin-top: var(--space-6);
     }
-    .contact-row {
+    .social-links {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.8rem;
+        gap: var(--space-5);
+        margin-top: var(--space-2);
+    }
+    .cat-scene {
+        container-type: inline-size;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 0;
+    }
+    .toolbox-section {
+        margin-top: var(--space-8);
+    }
+    .toolbox-table {
+        table-layout: fixed;
+    }
+    .toolbox-category {
+        width: 10rem;
+    }
+    .toolbox-table th {
+        width: 10rem;
+        padding-left: var(--space-3);
+        background: var(--color-base-200);
+        border-right: var(--rule-width) solid var(--rule-color);
+        font-family: var(--font-mono);
+        font-size: var(--text-small);
+        font-weight: 500;
+        text-transform: uppercase;
+        vertical-align: top;
+    }
+    .toolbox-table td {
+        padding-right: 0;
+        font-size: var(--text-body);
+        line-height: 1.7;
+    }
+    .toolbox-table th,
+    .toolbox-table td {
+        padding-block: var(--space-3);
+        border-bottom: var(--rule-width) solid var(--rule-color);
     }
     @media (max-width: 700px) {
         .intro {
-            display: block;
-            padding: var(--space-4) 0 var(--space-7);
-        }
-        .coffee-art {
-            font-size: 0.42rem;
-            margin: var(--space-7) auto 0;
-            transform: none;
-            width: max-content;
-        }
-        .home-page {
-            padding-top: var(--space-8);
-        }
-        .home-section {
-            padding: 2.2rem 0;
-        }
-        .section-heading {
-            display: block;
-        }
-        .skill-row {
-            gap: 0.45rem;
             grid-template-columns: 1fr;
+            gap: var(--space-5);
+        }
+        .cat-scene {
+            padding-block: var(--space-3);
+        }
+        .toolbox-table th {
+            width: 8rem;
+            padding-inline: var(--space-2);
+            font-size: 0.65rem;
+        }
+        .toolbox-category {
+            width: 8rem;
         }
     }
 </style>

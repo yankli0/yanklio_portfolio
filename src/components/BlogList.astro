@@ -1,6 +1,6 @@
 ---
 import type { BlogPost } from "../data/blog";
-import BlogCard from "./BlogCard.astro";
+import NoteHeader from "./NoteHeader.astro";
 
 interface Props {
     posts: BlogPost[];
@@ -9,14 +9,8 @@ interface Props {
 const { posts } = Astro.props;
 ---
 
-<div class="blog-list" role="list" aria-label="Notes">
-    {
-        posts.map((post) => (
-            <div role="listitem">
-                <BlogCard post={post} />
-            </div>
-        ))
-    }
+<div class="blog-list">
+    {posts.map((post) => <NoteHeader post={post} />)}
 </div>
 
 <style>
@@ -27,7 +21,6 @@ const { posts } = Astro.props;
         width: 100%;
         max-width: var(--content-max);
         margin: 0 auto;
-        padding-top: var(--space-9);
-        padding-bottom: var(--space-10);
+        padding-top: var(--section-gap);
     }
 </style>

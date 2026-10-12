@@ -1,179 +1,124 @@
 ---
 import type { BlogPost } from "../data/blog";
 import BlogTag from "./BlogTag.astro";
-
+import PageHeader from "./PageHeader.astro";
 interface Props {
     isDetail?: boolean;
     post: BlogPost;
 }
-
 const { post, isDetail = false } = Astro.props;
 const href = `/blog/${post.id}`;
-const day = post.data.pubDate.toLocaleDateString("en-US", { day: "2-digit" });
-const month = post.data.pubDate.toLocaleDateString("en-US", { month: "short" });
-const year = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric" });
-const longDate = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+const longDate = post.data.pubDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+});
 const Root = isDetail ? "header" : "article";
 const titleId = `note-${post.id.replace(/[^a-zA-Z0-9_-]/g, "-")}-title`;
+const readLabel = `Read ${post.data.title}`;
 ---
 
-<Root class="note-header" aria-labelledby={titleId}>
-    <time class="note-header__date" datetime={post.data.pubDate.toISOString()} aria-label={longDate}>
-        <span>{month}</span>
-        <strong>{day}</strong>
-        <small>{year}</small>
-    </time>
-    <div class="note-header__content">
+<Root class:list={["note-header", !isDetail && "layout-rule--bottom"]} aria-labelledby={titleId}>
+    <div class="note-header__body">
         {
             isDetail ? (
-                <h1 id={titleId}>{post.data.title}</h1>
+                <PageHeader id={titleId} title={post.data.title} />
             ) : (
-                <h2 id={titleId}>
-                    <a href={href}>{post.data.title}</a>
+                <h2 class="note-header__title">
+                    <a class="note-title-link" href={href}>
+                        {post.data.title}
+                    </a>
                 </h2>
             )
         }
-        <div class="note-header__summary"><span>{post.data.description}</span></div>
-        <div class="note-header__footer">
-            <div class="note-header__tags" role="list" aria-label="Tags">
+        <div class="note-header__meta">
+            <time datetime={post.data.pubDate.toISOString()}>{longDate}</time>
+        </div>
+        <div class="note-header__panel">
+            <p class="note-header__summary">{post.data.description}</p>
+            <div class="note-header__footer">
+                <ul class="note-header__tags" aria-label="Tags">
+                    {
+                        post.data.tags.map((tag) => (
+                            <li>
+                                <BlogTag text={tag} />
+                            </li>
+                        ))
+                    }
+                </ul>
                 {
-                    post.data.tags.map((tag) => (
-                        <span role="listitem">
-                            <BlogTag text={tag} />
-                        </span>
-                    ))
+                    !isDetail && (
+                        <a class="link" href={href} aria-label={readLabel}>
+                            Read note <span aria-hidden="true">→</span>
+                        </a>
+                    )
                 }
             </div>
-            {
-                !isDetail && (
-                    <a
-                        class="note-header__link compact-button paper-button"
-                        href={href}
-                        aria-label={`Open ${post.data.title}`}
-                    >
-                        Open <span aria-hidden="true">→</span>
-                    </a>
-                )
-            }
         </div>
     </div>
 </Root>
-
 <style>
     .note-header {
-        border: var(--border-width) solid var(--line);
-        display: grid;
-        grid-template-columns: 10rem minmax(0, 1fr);
+        padding-bottom: var(--space-5);
     }
-    .note-header__date {
-        align-items: center;
-        background: var(--accent);
-        border-right: var(--border-width) solid var(--line);
-        color: var(--bg);
+    .note-header__body {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: var(--space-4);
-        text-align: center;
+        gap: var(--space-2);
     }
-    .note-header__date span,
-    .note-header__date small {
+    .note-header__title {
+        font-size: var(--text-card-title);
+        font-weight: 500;
+        letter-spacing: -0.04em;
+        line-height: 1.15;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+    .note-header__panel {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        margin-top: var(--space-2);
+    }
+    .note-header__meta {
+        align-items: baseline;
+        color: color-mix(in oklch, var(--color-base-content) 70%, var(--color-base-100));
+        display: flex;
+        flex-wrap: wrap;
         font-size: var(--text-small);
-        font-weight: var(--weight-medium);
-        letter-spacing: 0.12em;
+        gap: var(--space-2);
+        justify-content: space-between;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
     }
-    .note-header__date strong {
-        font-size: 4.75rem;
-        font-weight: var(--weight-bold);
-        letter-spacing: -0.13em;
-        line-height: 0.8;
-    }
-    .note-header__content {
-        min-width: 0;
-        padding: var(--space-5);
-    }
-    .note-header__content h1,
-    .note-header__content h2 {
-        font-size: var(--text-card-title);
-        font-weight: var(--weight-bold);
-        letter-spacing: var(--tracking-tight);
-        line-height: 0.9;
-        margin: 0 0 var(--space-4);
-    }
-    .note-header__content h2 a {
-        color: inherit;
+    .note-title-link {
         text-decoration: none;
     }
-    .note-header__summary {
-        align-items: flex-end;
-        color: var(--fg2);
-        display: flex;
-        gap: var(--space-6);
-        justify-content: space-between;
-        line-height: 1.7;
+    .note-title-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
     }
-    .note-header__summary > span {
-        max-width: var(--text-max);
+    .note-header__summary {
+        line-height: var(--leading-body);
+        margin: 0;
     }
     .note-header__footer {
-        align-items: center;
         display: flex;
-        gap: var(--space-3);
+        flex-wrap: wrap;
+        align-items: center;
         justify-content: space-between;
-        margin-top: var(--space-4);
+        gap: var(--space-4);
     }
     .note-header__tags {
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-2);
     }
-    .note-header__link {
-        background: var(--surface);
-        color: var(--fg1);
-        flex: 0 0 var(--control-width);
-        text-decoration: none;
-    }
-    .note-header__link.paper-button:hover {
-        background: var(--surface);
-    }
-    .note-header__link span {
-        color: var(--accent);
-        font-size: 1.1rem;
-    }
-
-    @media (max-width: 700px) {
-        .note-header {
-            grid-template-columns: 6.5rem minmax(0, 1fr);
-        }
-        .note-header__date {
-            padding: var(--space-3) var(--space-2);
-        }
-        .note-header__date strong {
-            font-size: 3.2rem;
-        }
-        .note-header__content {
-            padding: var(--space-3);
-        }
-        .note-header__summary {
-            align-items: flex-start;
-            flex-direction: column;
-            gap: var(--space-3);
-        }
-    }
-
     @media (max-width: 420px) {
-        .note-header {
-            display: block;
-        }
-        .note-header__date {
-            align-items: center;
-            border-bottom: var(--border-width) solid var(--line);
-            border-right: 0;
-            flex-direction: row;
-        }
-        .note-header__date strong {
-            font-size: 2.5rem;
+        .note-header__footer {
+            align-items: stretch;
+            flex-direction: column;
         }
     }
 </style>
