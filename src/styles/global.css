@@ -13,16 +13,16 @@
 @plugin "daisyui/theme" {
     name: "garden";
     default: true;
-    --color-primary: #d1865a;
-    --color-primary-content: #2e2118;
-    --color-accent: #d9a05b;
-    --color-accent-content: #2e2118;
-    --color-secondary: #8f5935;
-    --color-secondary-content: #faf4e8;
-    --color-base-100: #faf4e8;
-    --color-base-200: #eee2cc;
-    --color-base-300: #d8c7a8;
-    --color-base-content: #352b23;
+    --color-primary: #c6826f;
+    --color-primary-content: #060505;
+    --color-accent: #865d45;
+    --color-accent-content: #fbfaf6;
+    --color-secondary: #d5cfc3;
+    --color-secondary-content: #2d2a26;
+    --color-base-100: #fbfaf6;
+    --color-base-200: #f2efe8;
+    --color-base-300: #d5cfc3;
+    --color-base-content: #2d2a26;
     --radius-selector: 0.125rem;
     --radius-field: 0.125rem;
     --radius-box: 0.125rem;
@@ -32,16 +32,16 @@
 @plugin "daisyui/theme" {
     name: "forest";
     prefersdark: true;
-    --color-primary: #cc7f4c;
-    --color-primary-content: #2e2118;
-    --color-accent: #a8642f;
-    --color-accent-content: #f4e8d2;
-    --color-secondary: #d1916a;
-    --color-secondary-content: #2e2118;
-    --color-base-100: #25211d;
-    --color-base-200: #1d1a16;
-    --color-base-300: #41372d;
-    --color-base-content: #f4e8d2;
+    --color-primary: #c6866f;
+    --color-primary-content: #1c120c;
+    --color-accent: #b68662;
+    --color-accent-content: #1c120c;
+    --color-secondary: #3d382f;
+    --color-secondary-content: #f0ede5;
+    --color-base-100: #17140f;
+    --color-base-200: #100e0a;
+    --color-base-300: #2b261e;
+    --color-base-content: #f0ede5;
     --radius-selector: 0.125rem;
     --radius-field: 0.125rem;
     --radius-box: 0.125rem;
@@ -74,7 +74,7 @@
         color: var(--color-primary-content);
     }
     :focus-visible {
-        outline: 2px solid var(--color-secondary);
+        outline: 2px solid var(--color-accent);
         outline-offset: 4px;
     }
     img {
@@ -109,7 +109,7 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-size: var(--text-small);
-    border: var(--rule-width) solid var(--rule-color);
+    border: var(--rule-width) solid var(--rule-border);
     box-shadow: var(--press-offset) var(--press-offset) 0 var(--rule-color);
     & svg {
         width: 1.15rem;

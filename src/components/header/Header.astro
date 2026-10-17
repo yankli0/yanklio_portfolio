@@ -77,9 +77,8 @@ import ThemeIcon from "./ThemeIcon.astro";
         line-height: 1.5;
     }
     .session-status {
-        --sweep-dim: color-mix(in oklab, var(--color-accent) 58%, var(--color-base-content));
+        --sweep-dim: color-mix(in oklab, var(--color-base-100) 75%, var(--color-base-content));
         align-items: center;
-        color: var(--color-accent);
         display: flex;
         gap: var(--space-2);
         justify-content: center;
@@ -90,9 +89,6 @@ import ThemeIcon from "./ThemeIcon.astro";
         line-height: 1;
         width: 1.1em;
     }
-    .session-status__phrase {
-        color: var(--color-accent);
-    }
     .session-status__phrase--sweeping {
         -webkit-background-clip: text;
         background-clip: text;
@@ -100,7 +96,7 @@ import ThemeIcon from "./ThemeIcon.astro";
             90deg,
             var(--sweep-dim) 0%,
             var(--sweep-dim) 38%,
-            var(--color-accent) 50%,
+            var(--color-base-100) 50%,
             var(--sweep-dim) 62%,
             var(--sweep-dim) 100%
         );
@@ -140,7 +136,7 @@ import ThemeIcon from "./ThemeIcon.astro";
         .session-status__phrase--sweeping {
             animation: none;
             background-image: none;
-            color: var(--color-accent);
+            color: var(--color-base-100);
             -webkit-text-fill-color: currentColor;
         }
     }

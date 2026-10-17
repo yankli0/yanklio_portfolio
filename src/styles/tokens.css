@@ -1,6 +1,8 @@
 :root {
     --rule-width: var(--border, 1px);
     --rule-color: color-mix(in oklch, var(--color-base-content) 65%, var(--color-base-100));
+    --rule-ink: #1a1613;
+    --rule-border: color-mix(in oklab, 25% var(--color-base-100), var(--rule-ink));
     --press-offset: 3px;
     --content-max: 62rem;
     --text-max: 48rem;
